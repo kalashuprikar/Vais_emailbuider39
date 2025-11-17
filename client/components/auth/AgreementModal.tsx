@@ -214,14 +214,14 @@ export default function AgreementModal({
           </div>
 
           {/* Footer Actions */}
-          <div className="border-t px-6 py-4 flex gap-3 justify-end bg-valasys-gray-50">
+          <div className="border-t px-6 py-4 flex gap-3 justify-end bg-white">
             <Button
               type="button"
               variant="outline"
               onClick={handleClose}
-              className="border-valasys-gray-300 text-valasys-gray-700 hover:bg-valasys-gray-100"
+              className="border-valasys-gray-300 text-valasys-gray-700 hover:bg-valasys-gray-50"
             >
-              Cancel
+              Decline
             </Button>
             <Button
               type="button"
@@ -233,7 +233,7 @@ export default function AgreementModal({
                   : "bg-valasys-gray-200 text-valasys-gray-500 cursor-not-allowed"
               }`}
             >
-              {allCheckboxesChecked ? "I Accept & Continue" : "Complete All Confirmations"}
+              {allCheckboxesChecked ? "Accept & Continue" : "Confirm All"}
             </Button>
           </div>
         </div>
