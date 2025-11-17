@@ -253,6 +253,7 @@ export default function AgreementModal({
                   id="hasRead"
                   checked={hasRead}
                   onCheckedChange={(checked) => setHasRead(checked === true)}
+                  className="w-5 h-5 rounded-none"
                 />
                 <label
                   htmlFor="hasRead"
@@ -269,6 +270,7 @@ export default function AgreementModal({
                   onCheckedChange={(checked) =>
                     setHasUnderstood(checked === true)
                   }
+                  className="w-5 h-5 rounded-none"
                 />
                 <label
                   htmlFor="hasUnderstood"
@@ -283,6 +285,7 @@ export default function AgreementModal({
                   id="hasAgreed"
                   checked={hasAgreed}
                   onCheckedChange={(checked) => setHasAgreed(checked === true)}
+                  className="w-5 h-5 rounded-none"
                 />
                 <label
                   htmlFor="hasAgreed"
