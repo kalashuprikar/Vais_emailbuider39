@@ -9,10 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Document, Page, pdfjs } from "react-pdf";
-import { ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
-
-pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
 interface AgreementModalProps {
   open: boolean;
@@ -20,29 +16,197 @@ interface AgreementModalProps {
   onConfirm: () => void;
 }
 
+const AGREEMENT_CONTENT = `MASTER SUBSCRIBER AGREEMENT – VAIS (Valasys AI)
+Operated by Valasys Media LLC (New Jersey, USA)
+
+1. DEFINITIONS
+1. "Company" means Valasys Media LLC, incorporated in New Jersey, USA.
+2. "Platform" means VAIS – Valasys AI, including but not limited to all tools, dashboards, analytics, AI models, scripts, and components.
+3. "Subscriber" means any individual or entity accessing the Platform.
+4. "Enterprise Subscriber" means Subscribers under a signed Enterprise Agreement.
+5. "Self‑Serve Subscriber" means users subscribing via Stripe.
+6. "Subscription Term" means the period of licensed access.
+
+2. AGREEMENT STRUCTURE
+Self-Serve Subscribers: governed by Stripe billing, strict no-refund policy, 48–72 hour email cancellation, and 7-day post-cancellation data retention.
+Enterprise Subscribers: governed by this Agreement plus a customized Enterprise Order Form and separate Enterprise SLA, with 90-day data retention. Enterprise terms supersede conflicting Self‑Serve terms.
+
+3. LICENSE GRANT
+Company grants Subscriber a limited, non-exclusive, non-transferable, revocable license to use the Platform for internal business purposes. No ownership rights are transferred.
+
+4. RESTRICTIONS
+Subscriber shall NOT:
+a. Reverse engineer, decompile, or attempt to extract source code, algorithms, model weights, or training data.
+b. Reproduce, distribute, or create derivative works of the Platform.
+c. Sell, sublicense, rent, lease, or share account access.
+d. Use the Platform to build or train a competing AI product.
+e. Use automation, scraping, bulk queries, or bypass rate limits without written authorization.
+f. Use the Platform to generate unlawful, harmful, abusive, fraudulent, defamatory, hateful, or malicious content.
+g. Use the Platform for spam, phishing, or unauthorized email generation.
+h. Attempt prompt injection attacks or technical manipulation.
+i. Access unauthorized areas or disrupt system integrity.
+
+Violation may result in immediate suspension or termination without refund.
+
+j. Prohibited Distribution of Exported Data
+Once the Subscriber downloads or exports any data, reports, insights, or content from the Platform, the Subscriber shall not share, sell, rent, lease, sublicense, distribute, publish, or otherwise make such data available to any third party in any form.
+
+Any unauthorized distribution, monetization, or disclosure of downloaded data shall constitute a material breach of this Agreement and will be treated as fraudulent activity under Company policy. The Company reserves the right to:
+• immediately suspend or terminate the Subscriber's access without refund,
+• pursue legal remedies, civil claims, or damages,
+• notify relevant authorities in cases involving fraud or misuse.
+
+The Subscriber agrees that downloaded data is provided solely for internal business use, and any external use without prior written consent from the Company is strictly prohibited.
+
+5. PAYMENT TERMS
+5.1 Payment Processing
+All Self‑Serve payments are processed exclusively through Stripe. Enterprise payments may follow invoicing terms outlined in the Enterprise Order Form.
+
+5.2 Card Storage & Authorization
+By subscribing, Subscriber authorizes:
+• Stripe to store payment details via PCI‑DSS Level 1 tokenization.
+• Automatic recurring charges for renewals, upgrades, outstanding balances, and unpaid invoices.
+Company does NOT store or access full card numbers.
+
+Subscriber acknowledges:
+• Removing a card does NOT cancel the subscription.
+• Subscriber must maintain a valid payment method.
+
+5.3 Auto-Renewal
+Subscriptions renew automatically until cancelled by Subscriber per Section 6.
+
+5.4 Strict No-Refund Policy
+ALL FEES PAID ARE FINAL AND NON‑REFUNDABLE WITHOUT EXCEPTION, including:
+• unused subscription time
+• partial usage or non-usage
+• dissatisfaction with Platform performance
+• mid-cycle cancellation
+• auto-renewal due to delayed cancellation
+• prepaid amounts
+• downgrades or plan changes
+
+5.5 Taxes & Fees
+Subscriber is responsible for all taxes, foreign exchange charges, bank fees, and cross-border fees imposed by payment providers.
+
+6. CANCELLATION & TERMINATION
+6.1 Self-Serve Cancellation
+Subscriber may cancel ONLY by emailing [Insert Support Email] from the registered account email.
+• Processing time: minimum 48 hours, up to 72 hours.
+• Renewal charges falling within this window WILL APPLY.
+• Cancellation becomes effective only upon Company's written confirmation.
+• No refunds will be provided under any circumstance.
+
+6.2 Enterprise Cancellation
+Enterprise Subscribers may terminate with 30 days' written notice unless otherwise specified.
+
+6.3 Termination for Cause
+Company may immediately suspend or terminate access without refund if:
+• Subscriber violates this Agreement
+• fraudulent activity or chargeback is initiated
+• payment fails and remains overdue
+• misuse, abuse, or illegal activity is detected
+• Subscriber jeopardizes system stability or security
+Company may refuse future business or reinstatement at its sole discretion.
+
+7. DATA RETENTION & DELETION
+7.1 Self-Serve Retention
+Upon cancellation:
+• access ends immediately upon processing
+• Subscriber retains access to historical data for 7 days
+• after 7 days, data may be permanently deleted and unrecoverable
+• Company has NO obligation to retrieve, restore, or recover deleted data
+
+7.2 Enterprise Retention
+Enterprise Subscribers receive 90-day retention unless otherwise stated in the Enterprise SLA.
+
+7.3 No Backup Guarantee
+Company does NOT guarantee:
+• backups
+• restore points
+• disaster recovery
+• long-term storage
+• archival retention
+
+Subscriber is solely responsible for exporting and securing data.
+Company is NOT liable for:
+• accidental deletion
+• subscriber errors
+• expired retention windows
+• corruption caused by third-party systems
+
+8. SERVICE AVAILABILITY & LIMITATIONS
+Platform is provided "as is" and "as available." Company does not guarantee:
+• uninterrupted uptime
+• error-free operations
+• AI accuracy or reliability
+• integration compatibility
+• performance speed
+
+Enterprise uptime commitments, if applicable, are defined ONLY in the Enterprise SLA.
+
+9. INTELLECTUAL PROPERTY
+All rights, title, interest, and intellectual property in VAIS—including models, algorithms, UI/UX, data structures, prompts, automation, and code—belong exclusively to Valasys Media LLC.
+
+Subscriber gains no ownership rights through use or payment.
+
+10. CONFIDENTIALITY
+Both Parties must protect confidential information with reasonable care and not disclose it to third parties except as required by law. Obligations survive termination.
+
+11. SECURITY
+Company employs commercially reasonable administrative, physical, and technical safeguards.
+
+Company does NOT warrant:
+• complete security
+• prevention of unauthorized access
+• absolute immunity from cyber incidents
+
+Subscriber must maintain secure credentials and is liable for all activity under its account.
+
+12. INDEMNIFICATION
+Subscriber shall indemnify, defend, and hold harmless Company from claims arising out of:
+• misuse of the Platform
+• breach of this Agreement
+• violation of laws or third-party rights
+• generated content misuse
+• unauthorized account activity
+
+13. LIMITATION OF LIABILITY
+To the maximum extent permitted by law, Company is NOT liable for:
+• lost profits
+• lost data
+• business interruption
+• indirect, incidental, special, punitive, exemplary, or consequential damages
+
+Total liability SHALL NOT EXCEED the fees paid by Subscriber during the active Subscription Term.
+
+Company bears no liability for actions of:
+• Stripe
+• hosting providers
+• third‑party integrations
+• internet or network failures
+
+14. FORCE MAJEURE
+Company is not liable for delays caused by events beyond reasonable control including natural disasters, cyberattacks, outages, war, government action, or provider failures.
+
+15. GOVERNING LAW & DISPUTE RESOLUTION
+This Agreement is governed exclusively by the laws of the State of New Jersey, USA.
+
+All disputes shall be resolved in courts located in New Jersey.
+
+16. AMENDMENTS
+Company may update this Agreement at any time. Continued use constitutes acceptance.
+
+17. ENTIRE AGREEMENT
+This Agreement, Enterprise Order Forms, and the Enterprise SLA constitute the entire agreement. No oral statements modify it.`;
+
 export default function AgreementModal({
   open,
   onOpenChange,
   onConfirm,
 }: AgreementModalProps) {
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [hasRead, setHasRead] = useState(false);
   const [hasUnderstood, setHasUnderstood] = useState(false);
   const [hasAgreed, setHasAgreed] = useState(false);
-  const [pdfError, setPdfError] = useState(false);
-
-  const documentUrl =
-    "https://cdn.builder.io/o/assets%2Fb84737c2f01348ecb1782b11d83745b5%2F00ba7936a5764e189c3bf45a8b83548b?alt=media&token=f3760bd2-328f-4368-9fb3-f52efac7ae38&apiKey=b84737c2f01348ecb1782b11d83745b5";
-
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
-    setPdfError(false);
-  };
-
-  const onDocumentLoadError = () => {
-    setPdfError(true);
-  };
 
   const allCheckboxesChecked = hasRead && hasUnderstood && hasAgreed;
 
@@ -50,12 +214,10 @@ export default function AgreementModal({
     if (allCheckboxesChecked) {
       onConfirm();
       onOpenChange(false);
-      // Reset state for next time
       setTimeout(() => {
         setHasRead(false);
         setHasUnderstood(false);
         setHasAgreed(false);
-        setCurrentPage(1);
       }, 300);
     }
   };
@@ -72,97 +234,19 @@ export default function AgreementModal({
             Master Subscriber Agreement
           </DialogTitle>
           <DialogDescription className="mt-2 text-valasys-gray-600">
-            Please review the document and confirm your understanding before
-            proceeding
+            Please review the document and confirm your understanding before proceeding
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* PDF Viewer */}
-          <div className="flex-1 overflow-auto bg-valasys-gray-50 border-b flex flex-col items-center p-4">
-            {pdfError ? (
-              <div className="flex items-center justify-center h-full w-full flex-col space-y-4">
-                <div className="flex items-center space-x-3 bg-red-50 border border-red-200 rounded-lg p-4 max-w-md">
-                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0" />
-                  <div className="text-sm text-red-700">
-                    <p className="font-semibold">Unable to load document</p>
-                    <p className="text-xs mt-1">
-                      The PDF viewer is temporarily unavailable. Please refresh
-                      the page and try again.
-                    </p>
-                  </div>
-                </div>
+          {/* Agreement Content Viewer */}
+          <ScrollArea className="flex-1 bg-white">
+            <div className="p-6 max-w-3xl mx-auto">
+              <div className="prose prose-sm max-w-none whitespace-pre-wrap text-sm text-valasys-gray-800 leading-relaxed">
+                {AGREEMENT_CONTENT}
               </div>
-            ) : (
-              <>
-                <div className="bg-white rounded-lg shadow-md border border-valasys-gray-200 overflow-hidden">
-                  <Document
-                    file={documentUrl}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                    onLoadError={onDocumentLoadError}
-                    loading={
-                      <div className="h-96 w-96 flex items-center justify-center bg-white rounded-lg">
-                        <div className="text-center">
-                          <div className="inline-block">
-                            <div className="w-8 h-8 border-4 border-valasys-orange border-t-transparent rounded-full animate-spin"></div>
-                          </div>
-                          <p className="mt-4 text-valasys-gray-600 text-sm">
-                            Loading document...
-                          </p>
-                        </div>
-                      </div>
-                    }
-                  >
-                    <Page
-                      pageNumber={currentPage}
-                      scale={1.5}
-                      renderTextLayer={true}
-                    />
-                  </Document>
-                </div>
-
-                {numPages && numPages > 1 && (
-                  <div className="flex items-center justify-center space-x-4 mt-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        setCurrentPage((prev) =>
-                          prev > 1 ? prev - 1 : prev
-                        )
-                      }
-                      disabled={currentPage === 1}
-                      className="gap-2"
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                      Previous
-                    </Button>
-
-                    <span className="text-sm font-medium text-valasys-gray-700">
-                      Page {currentPage} of {numPages}
-                    </span>
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        setCurrentPage((prev) =>
-                          prev < numPages ? prev + 1 : prev
-                        )
-                      }
-                      disabled={currentPage === numPages}
-                      className="gap-2"
-                    >
-                      Next
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+            </div>
+          </ScrollArea>
 
           {/* Checkboxes Section */}
           <div className="px-6 py-6 border-t bg-white space-y-4">
