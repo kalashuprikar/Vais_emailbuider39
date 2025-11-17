@@ -206,10 +206,8 @@ export default function AgreementModal({
   const [hasRead, setHasRead] = useState(false);
   const [hasUnderstood, setHasUnderstood] = useState(false);
   const [hasAgreed, setHasAgreed] = useState(false);
-  const [agreesToTerms, setAgreesToTerms] = useState(false);
 
-  const allCheckboxesChecked =
-    hasRead && hasUnderstood && hasAgreed && agreesToTerms;
+  const allCheckboxesChecked = hasRead && hasUnderstood && hasAgreed;
 
   const handleConfirm = () => {
     if (allCheckboxesChecked) {
@@ -219,7 +217,6 @@ export default function AgreementModal({
         setHasRead(false);
         setHasUnderstood(false);
         setHasAgreed(false);
-        setAgreesToTerms(false);
       }, 300);
     }
   };
@@ -293,40 +290,6 @@ export default function AgreementModal({
                 >
                   I agree to the Master Subscriber Agreement
                 </label>
-              </div>
-
-              <div className="border-t pt-3 mt-3">
-                <div className="flex items-center space-x-3">
-                  <Checkbox
-                    id="agreesToTerms"
-                    checked={agreesToTerms}
-                    onCheckedChange={(checked) =>
-                      setAgreesToTerms(checked === true)
-                    }
-                    className="w-5 h-5 rounded-none"
-                  />
-                  <label
-                    htmlFor="agreesToTerms"
-                    className="text-sm text-valasys-gray-700 cursor-pointer"
-                  >
-                    By signing up, you agree to our{" "}
-                    <a
-                      href="#"
-                      onClick={(e) => e.preventDefault()}
-                      className="text-valasys-orange hover:text-valasys-orange-light underline"
-                    >
-                      Terms & Conditions
-                    </a>{" "}
-                    and{" "}
-                    <a
-                      href="#"
-                      onClick={(e) => e.preventDefault()}
-                      className="text-valasys-orange hover:text-valasys-orange-light underline"
-                    >
-                      Privacy Policy
-                    </a>
-                  </label>
-                </div>
               </div>
             </div>
           </div>

@@ -25,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import CancelSubscriptionModal from "@/components/auth/CancelSubscriptionModal";
 import {
   Settings as SettingsIcon,
   User,
@@ -55,6 +56,7 @@ export default function Settings() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
+  const [cancelSubscriptionOpen, setCancelSubscriptionOpen] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
     browser: true,
@@ -152,6 +154,14 @@ export default function Settings() {
   const handleGenerateApiKey = () => {
     const newKey = "vls_" + Math.random().toString(36).substring(2, 32);
     setApiSettings({ ...apiSettings, apiKey: newKey });
+  };
+
+  const handleCancelSubscriptionConfirm = (email: string, reason: string) => {
+    console.log("Subscription cancellation confirmed:", {
+      email,
+      reason,
+      timestamp: new Date().toISOString(),
+    });
   };
 
   return (
@@ -570,14 +580,24 @@ export default function Settings() {
                       </div>
                     </div>
 
-                    {/* Upgrade Button */}
-                    <Button
-                      onClick={() => navigate("/subscription")}
-                      className="w-full mt-4 bg-gradient-to-r from-valasys-orange to-valasys-orange-light text-white shadow-md hover:shadow-lg hover:from-valasys-orange/90 hover:to-valasys-orange-light/90 transition-all"
-                    >
-                      <ArrowRight className="w-4 h-4 mr-2" />
-                      Upgrade Subscription
-                    </Button>
+                    {/* Upgrade and Cancel Buttons */}
+                    <div className="flex items-center gap-3 mt-4">
+                      <Button
+                        onClick={() => navigate("/subscription")}
+                        className="flex-1 bg-gradient-to-r from-valasys-orange to-valasys-orange-light text-white shadow-md hover:shadow-lg hover:from-valasys-orange/90 hover:to-valasys-orange-light/90 transition-all"
+                      >
+                        <ArrowRight className="w-4 h-4 mr-2" />
+                        Upgrade Subscription
+                      </Button>
+
+                      <Button
+                        onClick={() => setCancelSubscriptionOpen(true)}
+                        variant="outline"
+                        className="flex-1 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                      >
+                        Cancel Subscription
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -916,6 +936,20 @@ export default function Settings() {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Cancel Subscription Modal */}
+        <CancelSubscriptionModal
+          open={cancelSubscriptionOpen}
+          onOpenChange={setCancelSubscriptionOpen}
+          userEmail={profile.email}
+          planDetails={{
+            plan: billing.plan,
+            credits: billing.credits,
+            nextBilling: billing.nextBilling,
+            planExpiryDate: billing.planExpiryDate,
+          }}
+          onConfirm={handleCancelSubscriptionConfirm}
+        />
       </div>
     </DashboardLayout>
   );

@@ -870,17 +870,18 @@ export default function FavoritesProspects() {
           <div className="space-y-6">
             <div className="flex items-center space-x-4">
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link to="/find-prospect">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="text-valasys-orange hover:bg-valasys-orange hover:text-white"
-                      aria-label="Back"
-                    >
+                <TooltipTrigger>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="text-valasys-orange hover:bg-valasys-orange hover:text-white"
+                    aria-label="Back"
+                    asChild
+                  >
+                    <Link to="/find-prospect">
                       <ArrowLeft className="w-4 h-4" />
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </TooltipTrigger>
                 <TooltipContent>Back</TooltipContent>
               </Tooltip>
@@ -937,17 +938,18 @@ export default function FavoritesProspects() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Link to="/find-prospect">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="text-valasys-orange hover:bg-valasys-orange hover:text-white"
-                      aria-label="Back"
-                    >
+                <TooltipTrigger>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="text-valasys-orange hover:bg-valasys-orange hover:text-white"
+                    aria-label="Back"
+                    asChild
+                  >
+                    <Link to="/find-prospect">
                       <ArrowLeft className="w-4 h-4" />
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </TooltipTrigger>
                 <TooltipContent>Back</TooltipContent>
               </Tooltip>
