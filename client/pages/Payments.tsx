@@ -969,7 +969,10 @@ export default function Payments() {
                   {paymentMethodsList.length !== 1 ? "s" : ""} on file
                 </p>
               </div>
-              <Button className="bg-gradient-to-r from-valasys-orange to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all h-11">
+              <Button
+                onClick={() => setAddPaymentDialogOpen(true)}
+                className="bg-gradient-to-r from-valasys-orange to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all h-11"
+              >
                 <Plus className="w-5 h-5 mr-2" />
                 Add New Card
               </Button>
