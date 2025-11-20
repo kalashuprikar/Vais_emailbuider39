@@ -326,17 +326,9 @@ function ModernPaymentCard({
         <div
           className={`relative rounded-2xl overflow-hidden h-52 bg-white transition-all duration-300 transform hover:scale-105 p-6 flex flex-col justify-between ${
             method.isDefault
-              ? "shadow-md hover:shadow-lg"
+              ? "border-2 border-valasys-orange shadow-md hover:shadow-lg"
               : "border-2 border-gray-300 hover:border-gray-400 shadow-sm hover:shadow-md"
           }`}
-          style={
-            method.isDefault
-              ? {
-                  border: "3px solid",
-                  borderImage: `${getCardBorderGradient(method.cardNetwork)} 1`,
-                }
-              : undefined
-          }
         >
           <div className="flex items-start justify-between">
             <div className="space-y-1">
