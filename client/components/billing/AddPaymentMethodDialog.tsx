@@ -389,52 +389,41 @@ export function AddPaymentMethodDialog({
                         }`}
                         maxLength={19}
                       />
-                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center gap-1.5">
-                        {cardNetwork && (
-                          <>
-                            {cardNetwork === "Visa" && (
-                              <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
-                                <rect width="48" height="32" rx="4" fill="#1434CB"/>
-                                <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="10" fontWeight="bold">VISA</text>
-                              </svg>
-                            )}
-                            {cardNetwork === "Mastercard" && (
-                              <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
-                                <circle cx="18" cy="16" r="12" fill="#EB001B"/>
-                                <circle cx="30" cy="16" r="12" fill="#FF5F00"/>
-                              </svg>
-                            )}
-                            {cardNetwork === "American Express" && (
-                              <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
-                                <rect width="48" height="32" rx="4" fill="#006FCF"/>
-                                <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fill="white" fontSize="8" fontWeight="bold">AMEX</text>
-                              </svg>
-                            )}
-                            {cardNetwork === "Discover" && (
-                              <svg className="w-6 h-4" viewBox="0 0 48 32" fill="none">
-                                <rect width="48" height="32" rx="4" fill="#FF6000"/>
-                                <circle cx="30" cy="16" r="8" fill="white"/>
-                              </svg>
-                            )}
-                          </>
-                        )}
-                        {!cardNetwork && (
-                          <>
-                            <svg className="w-6 h-4 opacity-30" viewBox="0 0 48 32" fill="none">
-                              <rect width="48" height="32" rx="4" fill="#1434CB"/>
-                            </svg>
-                            <svg className="w-6 h-4 opacity-30" viewBox="0 0 48 32" fill="none">
-                              <circle cx="18" cy="16" r="12" fill="#EB001B"/>
-                              <circle cx="30" cy="16" r="12" fill="#FF5F00"/>
-                            </svg>
-                            <svg className="w-6 h-4 opacity-30" viewBox="0 0 48 32" fill="none">
-                              <rect width="48" height="32" rx="4" fill="#006FCF"/>
-                            </svg>
-                            <svg className="w-6 h-4 opacity-30" viewBox="0 0 48 32" fill="none">
-                              <rect width="48" height="32" rx="4" fill="#FF6000"/>
-                            </svg>
-                          </>
-                        )}
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                        {/* VISA */}
+                        <svg className={`w-7 h-5 transition-opacity ${cardNetwork === "Visa" ? "opacity-100" : "opacity-20"}`} viewBox="0 0 48 32" fill="none">
+                          <rect width="48" height="32" rx="3" fill="#1434CB"/>
+                          <path d="M18 20L16 12h-2.5l3 8M30 20l-2.5-8h-2l2.5 8M35 20l2-8h2.5l-2 8" stroke="white" strokeWidth="0.5"/>
+                          <text x="24" y="16" textAnchor="middle" fill="white" fontSize="6" fontWeight="bold" dominantBaseline="middle">VISA</text>
+                        </svg>
+
+                        {/* Mastercard */}
+                        <svg className={`w-7 h-5 transition-opacity ${cardNetwork === "Mastercard" ? "opacity-100" : "opacity-20"}`} viewBox="0 0 48 32" fill="none">
+                          <rect width="48" height="32" rx="3" fill="white" stroke="#E5E7EB" strokeWidth="0.5"/>
+                          <circle cx="16" cy="16" r="10" fill="#EB001B"/>
+                          <circle cx="32" cy="16" r="10" fill="#FF5F00"/>
+                          <circle cx="24" cy="16" r="10" fill="url(#grad)" opacity="0.7"/>
+                          <defs>
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" style={{stopColor: "#EB001B", stopOpacity: 1}} />
+                              <stop offset="100%" style={{stopColor: "#FF5F00", stopOpacity: 1}} />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+
+                        {/* American Express */}
+                        <svg className={`w-7 h-5 transition-opacity ${cardNetwork === "American Express" ? "opacity-100" : "opacity-20"}`} viewBox="0 0 48 32" fill="none">
+                          <rect width="48" height="32" rx="3" fill="#006FCF"/>
+                          <path d="M8 10v12h32V10H8m2 2h6v2h-6v-2m0 3h8v1h-8v-1m0 2h6v2h-6v-2m10-7h8v8h-8v-8m2 2v4h4v-4h-4m8-2h6l2 3l2-3h6v8h-2v-6h-4l-2 3l-2-3h-4v6h-2v-8" fill="white"/>
+                          <text x="24" y="17" textAnchor="middle" fill="white" fontSize="5" fontWeight="bold" dominantBaseline="middle">AMEX</text>
+                        </svg>
+
+                        {/* Discover */}
+                        <svg className={`w-7 h-5 transition-opacity ${cardNetwork === "Discover" ? "opacity-100" : "opacity-20"}`} viewBox="0 0 48 32" fill="none">
+                          <rect width="48" height="32" rx="3" fill="#FF6000"/>
+                          <circle cx="24" cy="16" r="6" fill="white"/>
+                          <text x="15" y="18" fill="white" fontSize="4" fontWeight="bold">DIS</text>
+                        </svg>
                       </div>
                     </div>
                     {getErrorMessage("cardNumber") && (
