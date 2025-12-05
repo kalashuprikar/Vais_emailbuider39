@@ -1121,6 +1121,11 @@ export default function BuildVAISForm() {
                                     </DialogTitle>
                                   </DialogHeader>
                                   {getTopicInsight(topic)}
+                                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                                    <p className="text-xs text-amber-800">
+                                      <span className="font-semibold">⚠️ Disclaimer:</span> This information is AI-generated and may not be 100% accurate. Please verify all insights and metrics with your internal data before making business decisions.
+                                    </p>
+                                  </div>
                                 </DialogContent>
                               </Dialog>
                               <Button
