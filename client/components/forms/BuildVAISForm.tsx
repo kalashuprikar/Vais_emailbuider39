@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -49,6 +50,7 @@ import {
   FileCheck,
   FileX,
   Sparkles,
+  Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FloatingStatsWidget } from "@/components/ui/floating-stats-widget";
@@ -482,27 +484,75 @@ export default function BuildVAISForm() {
     navigate("/vais-results");
   };
 
-  const getTopicInsight = (topic: (typeof intentTopics)[0]) => (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <span className="font-medium">{topic.name}</span>
-        <Badge variant="outline" className="text-xs">
-          {topic.conversion} convert
-        </Badge>
+  const getTopicInsight = (topic: (typeof intentTopics)[0]) => {
+    // Get dummy category and theme (cycle through the arrays based on topic name)
+    const topicIndex = intentTopics.indexOf(topic);
+    const dummyCategory = filterTopics[topicIndex % filterTopics.length];
+    const dummyTheme = filterThemes[topicIndex % filterThemes.length];
+
+    return (
+      <div className="space-y-5">
+        <div className="space-y-3">
+          <h3 className="text-2xl font-bold text-valasys-gray-900">
+            {topic.name}
+          </h3>
+          <p className="text-sm text-valasys-gray-600 leading-relaxed">
+            {topic.description}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 pb-5 border-b border-valasys-gray-200">
+          <div className="space-y-1">
+            <span className="text-xs font-medium text-valasys-gray-500 flex items-center uppercase tracking-wide">
+              <Tag className="w-3 h-3 mr-1.5 text-valasys-gray-400" />
+              Topic Category
+            </span>
+            <p className="text-sm text-valasys-gray-700 font-medium">
+              {dummyCategory}
+            </p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-xs font-medium text-valasys-gray-500 flex items-center uppercase tracking-wide">
+              <Layers className="w-3 h-3 mr-1.5 text-valasys-gray-400" />
+              Topic Theme
+            </span>
+            <p className="text-sm text-valasys-gray-700 font-medium">
+              {dummyTheme}
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-valasys-orange/5 to-valasys-orange-light/5 border border-valasys-orange/20 rounded-lg p-4 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold text-valasys-gray-700 flex items-center">
+              <Target className="w-4 h-4 mr-2 text-valasys-orange" />
+              Score
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info className="w-3.5 h-3.5 ml-1.5 text-valasys-gray-400 hover:text-valasys-gray-600 cursor-help transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent
+                  side="right"
+                  avoidCollisions={true}
+                  className="max-w-xs"
+                >
+                  <p className="text-xs leading-relaxed">
+                    Our score is calculated using AI-powered analysis of
+                    prospect engagement signals, company firmographics, intent
+                    indicators, and historical conversion data to predict
+                    likelihood of successful engagement.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </span>
+            <span className="text-2xl font-bold text-valasys-orange">
+              {topic.conversion}
+            </span>
+          </div>
+        </div>
       </div>
-      <p className="text-sm text-gray-600">{topic.description}</p>
-      <div className="flex items-center justify-between text-xs">
-        <span className="flex items-center">
-          <TrendingUp className="w-3 h-3 mr-1" />
-          Volume: {topic.volume}
-        </span>
-        <span className="flex items-center">
-          <Target className="w-3 h-3 mr-1" />
-          Conversion: {topic.conversion}
-        </span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <TooltipProvider>
@@ -1107,20 +1157,59 @@ export default function BuildVAISForm() {
                                     <Info className="w-3 h-3" />
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-md">
-                                  <DialogHeader>
-                                    <DialogTitle className="flex items-center gap-2 pr-10">
-                                      Topic Insights
-                                      <span className="ml-auto inline-flex shrink-0 items-center gap-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-valasys-orange to-valasys-orange-light text-white text-xs font-medium">
+                                <DialogContent className="max-w-lg bg-white [&>button]:hidden">
+                                  <div className="flex items-start justify-between gap-3 pb-4 border-b border-valasys-gray-200">
+                                    <div>
+                                      <DialogTitle className="text-xl font-bold text-valasys-gray-900">
+                                        Topic Insights
+                                      </DialogTitle>
+                                      <p className="text-xs text-valasys-gray-500 font-normal mt-1">
+                                        Detailed intelligence about this intent
+                                        topic
+                                      </p>
+                                    </div>
+                                    <div className="flex items-center gap-2 flex-shrink-0">
+                                      <span className="inline-flex shrink-0 items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-valasys-orange to-valasys-orange-light text-white text-xs font-semibold whitespace-nowrap">
                                         <Sparkles
                                           className="w-3.5 h-3.5 animate-pulse"
                                           aria-hidden="true"
                                         />
                                         AI Generated
                                       </span>
-                                    </DialogTitle>
-                                  </DialogHeader>
-                                  {getTopicInsight(topic)}
+                                      <DialogClose asChild>
+                                        <Button
+                                          variant="ghost"
+                                          size="icon"
+                                          className="h-6 w-6 p-0 hover:bg-gray-100 rounded-md"
+                                          aria-label="Close"
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </DialogClose>
+                                    </div>
+                                  </div>
+
+                                  <div className="py-6">
+                                    {getTopicInsight(topic)}
+                                  </div>
+
+                                  <div className="bg-gradient-to-r from-amber-50 via-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 space-y-2">
+                                    <div className="flex items-start gap-3">
+                                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                                      <div className="space-y-1">
+                                        <p className="text-xs font-semibold text-amber-900">
+                                          AI-Generated Content Disclaimer
+                                        </p>
+                                        <p className="text-xs text-amber-800 leading-relaxed">
+                                          This information is generated by AI
+                                          and may not be 100% accurate. We
+                                          recommend verifying all insights and
+                                          metrics with your internal data before
+                                          making business decisions.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </DialogContent>
                               </Dialog>
                               <Button
