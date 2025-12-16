@@ -307,7 +307,7 @@ export const EmailBuilder: React.FC<EmailBuilderProps> = ({
                         </div>
                         <p className="mb-2 text-gray-600 font-medium">Drop content here</p>
                         <p className="text-sm text-gray-400">
-                          Add blocks from the left sidebar to get started
+                          Drag blocks from the left sidebar to add them to your email
                         </p>
                       </div>
                     ) : (
