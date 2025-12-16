@@ -276,8 +276,24 @@ export function renderBlockToHTML(block: ContentBlock): string {
           : "";
       return `<p style="font-size: ${textBlock.fontSize}px; color: ${textBlock.fontColor}; background-color: ${textBlock.backgroundColor}; text-align: ${textBlock.alignment}; font-weight: ${textBlock.fontWeight}; font-style: ${textBlock.fontStyle}; margin: ${textBlock.margin}px; padding: ${textBlock.padding}px; width: ${textWidth}; border-radius: ${textBlock.borderRadius}px; ${textBorder}">${textBlock.content}</p>`;
     }
-    case "image":
-      return `<img src="${block.src}" alt="${block.alt}" style="width: ${block.width}px; height: ${block.height}px; display: block; margin: 0 auto;" />`;
+    case "image": {
+      const imageBlock = block as ImageBlock;
+      const imageWidth =
+        imageBlock.widthUnit === "%"
+          ? `${imageBlock.width}%`
+          : `${imageBlock.width}px`;
+      const imageBorder =
+        imageBlock.borderWidth > 0
+          ? `border: ${imageBlock.borderWidth}px solid ${imageBlock.borderColor};`
+          : "";
+      const imageDisplay =
+        imageBlock.alignment === "left"
+          ? "block; margin-right: auto;"
+          : imageBlock.alignment === "right"
+            ? "block; margin-left: auto;"
+            : "block; margin: auto;";
+      return `<img src="${imageBlock.src}" alt="${imageBlock.alt}" style="width: ${imageWidth}; display: ${imageDisplay} padding: ${imageBlock.padding}px; margin: ${imageBlock.margin}px; border-radius: ${imageBlock.borderRadius}px; ${imageBorder}" />`;
+    }
     case "video":
       return `<div style="text-align: ${block.alignment};"><video width="${block.width}" height="${block.height}" controls poster="${block.thumbnail}" style="max-width: 100%;"><source src="${block.src}" type="video/mp4"></video></div>`;
     case "button":
