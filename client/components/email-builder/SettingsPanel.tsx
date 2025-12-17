@@ -1742,55 +1742,515 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 className="focus:ring-valasys-orange focus:ring-2"
               />
             </div>
+
             <div>
-              <Label htmlFor="btnLink">Link</Label>
-              <Input
-                id="btnLink"
-                value={block.link}
-                onChange={(e) =>
-                  onBlockUpdate({ ...block, link: e.target.value })
-                }
-              />
+              <h4 className="text-xs font-bold text-gray-900 mb-3">Link</h4>
+              <div className="space-y-3">
+                <div>
+                  <Label htmlFor="btnLinkType" className="text-xs text-gray-700 mb-1 block">
+                    Type
+                  </Label>
+                  <select
+                    id="btnLinkType"
+                    value={(block as any).linkType || "url"}
+                    onChange={(e) =>
+                      onBlockUpdate({
+                        ...block,
+                        linkType: e.target.value as "url" | "page" | "email",
+                      })
+                    }
+                    className="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-valasys-orange"
+                  >
+                    <option value="url">Absolute Link (URL)</option>
+                    <option value="page">Page</option>
+                    <option value="email">Email</option>
+                  </select>
+                </div>
+                <div>
+                  <Label htmlFor="btnLinkTarget" className="text-xs text-gray-700 mb-1 block">
+                    Target
+                  </Label>
+                  <Input
+                    id="btnLinkTarget"
+                    value={(block as any).linkTarget || ""}
+                    onChange={(e) =>
+                      onBlockUpdate({ ...block, linkTarget: e.target.value })
+                    }
+                    placeholder="Leave empty for same tab"
+                    className="focus:ring-valasys-orange focus:ring-2"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="btnLinkTooltip" className="text-xs text-gray-700 mb-1 block">
+                    Tooltip
+                  </Label>
+                  <Input
+                    id="btnLinkTooltip"
+                    value={(block as any).linkTooltip || ""}
+                    onChange={(e) =>
+                      onBlockUpdate({ ...block, linkTooltip: e.target.value })
+                    }
+                    placeholder="Hover text"
+                    className="focus:ring-valasys-orange focus:ring-2"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="btnLink" className="text-xs text-gray-700 mb-1 block">
+                    URL
+                  </Label>
+                  <Input
+                    id="btnLink"
+                    value={block.link}
+                    onChange={(e) =>
+                      onBlockUpdate({ ...block, link: e.target.value })
+                    }
+                    placeholder="https://example.com"
+                    className="focus:ring-valasys-orange focus:ring-2"
+                  />
+                </div>
+                <button
+                  className="text-xs text-valasys-orange font-semibold hover:text-valasys-orange"
+                  onClick={() =>
+                    onBlockUpdate({ ...block, link: "", linkTarget: "", linkTooltip: "" })
+                  }
+                >
+                  Remove link
+                </button>
+              </div>
             </div>
+
             <div>
-              <Label htmlFor="btnBgColor">Button Color</Label>
-              <Input
-                id="btnBgColor"
-                type="color"
-                value={block.backgroundColor}
-                onChange={(e) =>
-                  onBlockUpdate({ ...block, backgroundColor: e.target.value })
-                }
-              />
+              <h4 className="text-xs font-bold text-gray-900 mb-3">Layout</h4>
+              <div className="space-y-3">
+                <div>
+                  <Label
+                    htmlFor="btnWidth"
+                    className="text-xs text-gray-700 mb-1 block"
+                  >
+                    Width
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="btnWidth"
+                      type="number"
+                      min="0"
+                      value={block.width}
+                      onChange={(e) =>
+                        onBlockUpdate({
+                          ...block,
+                          width: parseInt(e.target.value),
+                        })
+                      }
+                      className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                    />
+                    <select
+                      value={block.widthUnit}
+                      onChange={(e) =>
+                        onBlockUpdate({
+                          ...block,
+                          widthUnit: e.target.value as "px" | "%",
+                        })
+                      }
+                      className="px-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-valasys-orange"
+                    >
+                      <option value="px">px</option>
+                      <option value="%">%</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <Label
+                    htmlFor="btnBlockAlignment"
+                    className="text-xs text-gray-700 mb-1 block"
+                  >
+                    Block Alignment
+                  </Label>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={
+                        block.alignment === "left" ? "default" : "outline"
+                      }
+                      size="sm"
+                      className="flex-1"
+                      onClick={() =>
+                        onBlockUpdate({ ...block, alignment: "left" })
+                      }
+                    >
+                      ⬅
+                    </Button>
+                    <Button
+                      variant={
+                        block.alignment === "center" ? "default" : "outline"
+                      }
+                      size="sm"
+                      className="flex-1"
+                      onClick={() =>
+                        onBlockUpdate({ ...block, alignment: "center" })
+                      }
+                    >
+                      ⬇
+                    </Button>
+                    <Button
+                      variant={
+                        block.alignment === "right" ? "default" : "outline"
+                      }
+                      size="sm"
+                      className="flex-1"
+                      onClick={() =>
+                        onBlockUpdate({ ...block, alignment: "right" })
+                      }
+                    >
+                      ➡
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div>
-              <Label htmlFor="btnTextColor">Text Color</Label>
-              <Input
-                id="btnTextColor"
-                type="color"
-                value={block.textColor}
-                onChange={(e) =>
-                  onBlockUpdate({ ...block, textColor: e.target.value })
-                }
-              />
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-xs font-bold text-gray-900">Spacing</h4>
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="text-xs text-gray-700">Padding</Label>
+                    <div className="flex items-center gap-2">
+                      <Checkbox
+                        id="btnGroupPadding"
+                        checked={groupPaddingSides}
+                        onCheckedChange={(checked) =>
+                          setGroupPaddingSides(checked as boolean)
+                        }
+                      />
+                      <Label
+                        htmlFor="btnGroupPadding"
+                        className="text-xs text-gray-600 cursor-pointer"
+                      >
+                        Group sides
+                      </Label>
+                    </div>
+                  </div>
+                  {groupPaddingSides ? (
+                    <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        min="0"
+                        value={paddingTop}
+                        onChange={(e) =>
+                          handlePaddingChange(parseInt(e.target.value))
+                        }
+                        className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                      />
+                      <span className="px-2 py-1 text-sm text-gray-600">
+                        px
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          ↑
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={paddingTop}
+                          onChange={(e) =>
+                            handlePaddingChange(parseInt(e.target.value), "top")
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          →
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={paddingRight}
+                          onChange={(e) =>
+                            handlePaddingChange(
+                              parseInt(e.target.value),
+                              "right",
+                            )
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          ↓
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={paddingBottom}
+                          onChange={(e) =>
+                            handlePaddingChange(
+                              parseInt(e.target.value),
+                              "bottom",
+                            )
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          ←
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={paddingLeft}
+                          onChange={(e) =>
+                            handlePaddingChange(
+                              parseInt(e.target.value),
+                              "left",
+                            )
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label className="text-xs text-gray-700">Margin</Label>
+                  </div>
+                  {!groupMarginSides ? (
+                    <div className="flex gap-2">
+                      <Input
+                        type="number"
+                        min="0"
+                        value={marginTop}
+                        onChange={(e) =>
+                          handleMarginChange(parseInt(e.target.value))
+                        }
+                        className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                      />
+                      <span className="px-2 py-1 text-sm text-gray-600">
+                        px
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          ↑
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={marginTop}
+                          onChange={(e) =>
+                            handleMarginChange(parseInt(e.target.value), "top")
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          →
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={marginRight}
+                          onChange={(e) =>
+                            handleMarginChange(
+                              parseInt(e.target.value),
+                              "right",
+                            )
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          ↓
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={marginBottom}
+                          onChange={(e) =>
+                            handleMarginChange(
+                              parseInt(e.target.value),
+                              "bottom",
+                            )
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-600 w-6 text-center">
+                          ←
+                        </span>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={marginLeft}
+                          onChange={(e) =>
+                            handleMarginChange(parseInt(e.target.value), "left")
+                          }
+                          className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
+
             <div>
-              <Label htmlFor="btnAlignment">Alignment</Label>
-              <select
-                id="btnAlignment"
-                value={block.alignment}
-                onChange={(e) =>
-                  onBlockUpdate({
-                    ...block,
-                    alignment: e.target.value as any,
-                  })
-                }
-                className="w-full border border-gray-300 rounded px-2 py-1 text-sm"
-              >
-                <option value="left">Left</option>
-                <option value="center">Center</option>
-                <option value="right">Right</option>
-              </select>
+              <h4 className="text-xs font-bold text-gray-900 mb-3">
+                Background
+              </h4>
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-xs text-gray-700 mb-1 block">
+                    Color
+                  </Label>
+                  <Input
+                    type="color"
+                    value={block.backgroundColor}
+                    onChange={(e) =>
+                      onBlockUpdate({
+                        ...block,
+                        backgroundColor: e.target.value,
+                      })
+                    }
+                    className="focus:ring-valasys-orange focus:ring-2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 mb-3">
+                Rounded corners
+              </h4>
+              <div className="space-y-3">
+                <div>
+                  <Label
+                    htmlFor="btnRadius"
+                    className="text-xs text-gray-700 mb-1 block"
+                  >
+                    Radius
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="btnRadius"
+                      type="number"
+                      min="0"
+                      value={block.borderRadius}
+                      onChange={(e) =>
+                        onBlockUpdate({
+                          ...block,
+                          borderRadius: parseInt(e.target.value),
+                        })
+                      }
+                      className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                    />
+                    <span className="px-2 py-1 text-sm text-gray-600">px</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 mb-3">Borders</h4>
+              <div className="space-y-3">
+                <div>
+                  <Label
+                    htmlFor="btnBorderSize"
+                    className="text-xs text-gray-700 mb-1 block"
+                  >
+                    Size
+                  </Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="btnBorderSize"
+                      type="number"
+                      min="0"
+                      value={block.borderWidth}
+                      onChange={(e) =>
+                        onBlockUpdate({
+                          ...block,
+                          borderWidth: parseInt(e.target.value),
+                        })
+                      }
+                      className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                    />
+                    <span className="px-2 py-1 text-sm text-gray-600">px</span>
+                  </div>
+                </div>
+                <div>
+                  <Label
+                    htmlFor="btnBorderColor"
+                    className="text-xs text-gray-700 mb-1 block"
+                  >
+                    Color
+                  </Label>
+                  <Input
+                    id="btnBorderColor"
+                    type="color"
+                    value={block.borderColor}
+                    onChange={(e) =>
+                      onBlockUpdate({ ...block, borderColor: e.target.value })
+                    }
+                    className="focus:ring-valasys-orange focus:ring-2"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-bold text-gray-900 mb-3">
+                Show on
+              </h4>
+              <p className="text-xs text-gray-500 mb-3">
+                Display content based on the type of device or other specific
+                conditions
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                <Button
+                  variant={block.visibility === "all" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => onBlockUpdate({ ...block, visibility: "all" })}
+                  className="text-xs"
+                >
+                  All devices
+                </Button>
+                <Button
+                  variant={
+                    block.visibility === "desktop" ? "default" : "outline"
+                  }
+                  size="sm"
+                  onClick={() =>
+                    onBlockUpdate({ ...block, visibility: "desktop" })
+                  }
+                  className="text-xs"
+                >
+                  Only on desktop
+                </Button>
+                <Button
+                  variant={
+                    block.visibility === "mobile" ? "default" : "outline"
+                  }
+                  size="sm"
+                  onClick={() =>
+                    onBlockUpdate({ ...block, visibility: "mobile" })
+                  }
+                  className="text-xs"
+                >
+                  Only on mobile
+                </Button>
+              </div>
             </div>
           </div>
         );
