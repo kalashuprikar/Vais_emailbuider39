@@ -34,6 +34,8 @@ import {
   createProductBlock,
   createNavigationBlock,
   createSpacerBlock,
+  createCenteredImageCardBlock,
+  createSplitImageCardBlock,
 } from "./utils";
 import { ContentBlock } from "./types";
 
@@ -88,42 +90,143 @@ const DraggableBlockButton: React.FC<DraggableBlockProps> = ({ block }) => {
 
 interface Section {
   title: string;
-  blocks: BlockOption[];
+  blocks?: BlockOption[];
+  templates?: Template[];
+}
+
+interface Template {
+  id: string;
+  title: string;
+  description: string;
+  preview: string;
+  blocks: () => ContentBlock[];
 }
 
 interface SectionsPanelProps {
   onAddBlock: (block: ContentBlock) => void;
 }
 
+interface DraggableTemplateProps {
+  template: Template;
+  onAddBlocks: (blocks: ContentBlock[]) => void;
+}
+
+const DraggableTemplateCard: React.FC<DraggableTemplateProps> = ({
+  template,
+  onAddBlocks,
+}) => {
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: "template",
+      item: () => {
+        return { blocks: template.blocks() };
+      },
+      collect: (monitor) => ({
+        isDragging: !!monitor.isDragging(),
+      }),
+    }),
+    [template],
+  );
+
+  return (
+    <div
+      ref={drag}
+      className={`flex flex-col border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-move ${
+        isDragging ? "opacity-50" : ""
+      }`}
+    >
+      <div className="w-full h-32 bg-gray-200 overflow-hidden">
+        <img
+          src={template.preview}
+          alt={template.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="p-3 flex flex-col flex-1">
+        <h3 className="text-sm font-semibold text-gray-900 mb-1">
+          {template.title}
+        </h3>
+        <p className="text-xs text-gray-600 mb-3 flex-1">
+          {template.description}
+        </p>
+        <button
+          onClick={() => onAddBlocks(template.blocks())}
+          className="w-full px-3 py-2 bg-valasys-orange text-white text-xs font-medium rounded hover:bg-orange-600 transition-colors"
+        >
+          Use template
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const SectionsPanel: React.FC<SectionsPanelProps> = ({ onAddBlock }) => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+
+  const textImageTemplates: Template[] = [
+    {
+      id: "image-top-text-bottom",
+      title: "Image with text",
+      description: "Image on top with text description below",
+      preview:
+        "https://images.unsplash.com/photo-1470114716159-e389f8712fda?w=400&h=200&fit=crop",
+      blocks: () => [createImageBlock(), createTextBlock()],
+    },
+    {
+      id: "image-left-text-right",
+      title: "Two column layout",
+      description: "Image and text side by side",
+      preview:
+        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=200&fit=crop",
+      blocks: () => [createImageBlock(), createTextBlock()],
+    },
+    {
+      id: "hero-section",
+      title: "Hero section",
+      description: "Full width image with overlay text",
+      preview:
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=200&fit=crop",
+      blocks: () => [createImageBlock(), createTitleBlock(), createTextBlock()],
+    },
+    {
+      id: "image-grid",
+      title: "Image grid",
+      description: "Multiple images in a grid layout",
+      preview:
+        "https://images.unsplash.com/photo-1506717206882-14319dc5e69c?w=400&h=200&fit=crop",
+      blocks: () => [
+        createImageBlock(),
+        createImageBlock(),
+        createImageBlock(),
+      ],
+    },
+    {
+      id: "featured-image",
+      title: "Featured image",
+      description: "Large featured image with small text",
+      preview:
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=200&fit=crop",
+      blocks: () => [createImageBlock(), createTitleBlock()],
+    },
+    {
+      id: "text-image-button",
+      title: "Image with CTA",
+      description: "Image, text and call to action button",
+      preview:
+        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=200&fit=crop",
+      blocks: () => [
+        createImageBlock(),
+        createTitleBlock(),
+        createTextBlock(),
+        createButtonBlock(),
+      ],
+    },
+  ];
 
   const sections: Section[] = [
     {
       title: "Text & images",
-      blocks: [
-        {
-          id: "title",
-          icon: <Type className="w-6 h-6 text-valasys-orange" />,
-          label: "Title",
-          description: "Large heading text",
-          onCreate: () => createTitleBlock(),
-        },
-        {
-          id: "text",
-          icon: <Type className="w-6 h-6 text-valasys-orange" />,
-          label: "Text",
-          description: "Body text content",
-          onCreate: () => createTextBlock(),
-        },
-        {
-          id: "image",
-          icon: <Image className="w-6 h-6 text-valasys-orange" />,
-          label: "Image",
-          description: "Image element",
-          onCreate: () => createImageBlock(),
-        },
-      ],
+      templates: textImageTemplates,
     },
     {
       title: "Text",
@@ -216,6 +319,10 @@ const SectionsPanel: React.FC<SectionsPanelProps> = ({ onAddBlock }) => {
     setExpandedSection(expandedSection === title ? null : title);
   };
 
+  const handleAddBlocks = (blocks: ContentBlock[]) => {
+    blocks.forEach((block) => onAddBlock(block));
+  };
+
   return (
     <div className="flex flex-col w-full">
       <div className="border-b border-gray-200">
@@ -237,11 +344,23 @@ const SectionsPanel: React.FC<SectionsPanelProps> = ({ onAddBlock }) => {
 
             {expandedSection === section.title && (
               <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
-                <div className="grid grid-cols-3 gap-3">
-                  {section.blocks.map((block) => (
-                    <DraggableBlockButton key={block.id} block={block} />
-                  ))}
-                </div>
+                {section.templates ? (
+                  <div className="flex flex-col gap-3">
+                    {section.templates.map((template) => (
+                      <DraggableTemplateCard
+                        key={template.id}
+                        template={template}
+                        onAddBlocks={handleAddBlocks}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-3">
+                    {section.blocks?.map((block) => (
+                      <DraggableBlockButton key={block.id} block={block} />
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
