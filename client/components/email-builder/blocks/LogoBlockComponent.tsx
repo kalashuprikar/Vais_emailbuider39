@@ -33,8 +33,8 @@ export const LogoBlockComponent: React.FC<LogoBlockComponentProps> = ({
         ) : (
           <div
             style={{
-              width: block.width,
-              height: block.height,
+              width: `${block.width}px`,
+              height: `${block.height}px`,
               backgroundColor: "#f0f0f0",
               border: "2px dashed #ccc",
               display: "flex",
@@ -42,6 +42,7 @@ export const LogoBlockComponent: React.FC<LogoBlockComponentProps> = ({
               justifyContent: "center",
               color: "#999",
               borderRadius: "4px",
+              margin: block.alignment === "center" ? "0 auto" : "0",
             }}
           >
             <span className="text-sm">Logo Image</span>
