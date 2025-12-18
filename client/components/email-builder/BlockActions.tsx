@@ -35,8 +35,6 @@ interface BlockActionsProps {
   blockIndex: number;
   totalBlocks: number;
   onAddBlock: (block: ContentBlock, position: number) => void;
-  onMoveUp: (index: number) => void;
-  onMoveDown: (index: number) => void;
   onDuplicate: (block: ContentBlock, position: number) => void;
   onDelete: () => void;
 }
