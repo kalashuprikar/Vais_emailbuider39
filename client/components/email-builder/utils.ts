@@ -883,6 +883,25 @@ export function renderBlockToHTML(block: ContentBlock): string {
         .join("");
       return `<div style="width: ${width};"><div style="display: flex; gap: 20px;">${cardsHtml}</div></div>`;
     }
+    case "stats": {
+      const statsBlock = block as any;
+      const width = `${statsBlock.width}${statsBlock.widthUnit}`;
+      const statsHtml = statsBlock.stats
+        ?.map(
+          (stat: any, index: number) => {
+            const borderStyle =
+              index !== statsBlock.stats.length - 1
+                ? "border-right: 1px solid #e0e0e0;"
+                : "";
+            return `<div style="width: 33%; display: inline-block; vertical-align: top; text-align: center; padding: ${stat.padding}px; box-sizing: border-box; ${borderStyle}">
+              <h3 style="margin: 0 0 8px 0; font-size: ${stat.fontSize}px; font-weight: bold; color: ${stat.textColor};">${stat.value}</h3>
+              <p style="margin: 0; font-size: ${stat.labelFontSize}px; color: #666;">${stat.label}</p>
+            </div>`;
+          },
+        )
+        .join("");
+      return `<div style="width: ${width}; margin: 20px 0;">${statsHtml}</div>`;
+    }
     case "divider":
       return `<hr style="border: none; border-top: ${block.height}px solid ${block.color}; margin: ${block.margin}px 0;" />`;
     case "product": {
