@@ -918,17 +918,18 @@ export function renderBlockToHTML(block: ContentBlock): string {
     case "features": {
       const featuresBlock = block as any;
       const width = `${featuresBlock.width}${featuresBlock.widthUnit}`;
-      const columnWidth = 100 / featuresBlock.columnsCount;
       const featuresHtml = featuresBlock.features
         ?.map((feature: any) => {
-          return `<div style="width: ${columnWidth}%; display: inline-block; vertical-align: top; text-align: center; padding: ${feature.padding}px; box-sizing: border-box; background-color: ${feature.backgroundColor}; border-radius: ${feature.borderRadius}px; margin: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-              <div style="font-size: 32px; margin-bottom: 12px; line-height: 1;">${feature.icon}</div>
-              <h3 style="margin: 0 0 8px 0; font-size: ${feature.titleFontSize}px; font-weight: bold; color: ${feature.textColor};">${feature.title}</h3>
-              <p style="margin: 0; font-size: ${feature.fontSize}px; color: ${feature.textColor}; line-height: 1.5;">${feature.description}</p>
+          return `<div style="flex: 1; min-width: 0; text-align: center; padding: 0 10px; box-sizing: border-box;">
+              <div style="background-color: ${feature.backgroundColor}; border-radius: ${feature.borderRadius}px; padding: ${feature.padding}px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); height: 100%;">
+                <div style="font-size: 32px; margin-bottom: 12px; line-height: 1;">${feature.icon}</div>
+                <h3 style="margin: 0 0 8px 0; font-size: ${feature.titleFontSize}px; font-weight: bold; color: ${feature.textColor};">${feature.title}</h3>
+                <p style="margin: 0; font-size: ${feature.fontSize}px; color: ${feature.textColor}; line-height: 1.5;">${feature.description}</p>
+              </div>
             </div>`;
         })
         .join("");
-      return `<div style="width: ${width}; margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center;">${featuresHtml}</div>`;
+      return `<div style="width: ${width}; margin: 20px 0; display: flex; flex-wrap: nowrap; gap: 0; align-items: stretch;">${featuresHtml}</div>`;
     }
     case "divider":
       return `<hr style="border: none; border-top: ${block.height}px solid ${block.color}; margin: ${block.margin}px 0;" />`;
