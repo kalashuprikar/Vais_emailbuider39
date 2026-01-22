@@ -1090,7 +1090,10 @@ export default function BuildVAISForm() {
                       placeholder="Search intent topics..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10"
+                      className={cn(
+                        "pl-10",
+                        blinkingField === "searchTopics" ? "border-blink" : ""
+                      )}
                     />
                   </div>
 
