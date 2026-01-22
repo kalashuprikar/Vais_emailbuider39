@@ -418,6 +418,8 @@ export default function BuildVAISForm() {
 
     if (validExtensions.includes(fileExtension) && file.size <= maxSize) {
       setFileStatus("valid");
+      // Trigger blink on the Build VAIS button when file is valid
+      triggerFieldBlink("buildVAIS");
     } else {
       setFileStatus("invalid");
     }
