@@ -267,9 +267,9 @@ export const EmailBuilder: React.FC<EmailBuilderProps> = ({
                   setShowSourceCode(!showSourceCode);
                 }}
                 className={showSourceCode ? "bg-valasys-orange text-white" : ""}
+                title="View Source"
               >
-                <Code className="w-4 h-4 mr-1" />
-                {showSourceCode ? "Edit" : "View Source"}
+                <Code className="w-4 h-4" />
               </Button>
               <Button
                 variant="outline"
@@ -279,18 +279,17 @@ export const EmailBuilder: React.FC<EmailBuilderProps> = ({
                   setPreviewMode(!previewMode);
                 }}
                 className={previewMode ? "bg-valasys-orange text-white" : ""}
+                title="Preview & test"
               >
-                <Eye className="w-4 h-4 mr-1" />
-                {previewMode ? "Edit" : "Preview & test"}
+                <Eye className="w-4 h-4" />
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleDownloadHTML}
-                className="gap-2"
+                title="Download HTML"
               >
                 <Download className="w-4 h-4" />
-                Download HTML
               </Button>
               <Button
                 onClick={() => setShowSaveDialog(true)}
