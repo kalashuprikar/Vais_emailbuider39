@@ -38,6 +38,8 @@ export const TitleBlockComponent: React.FC<TitleBlockComponentProps> = ({
     marginBottom: isNaN(block.marginBottom as any)
       ? block.margin || 0
       : block.marginBottom,
+    boxSizing: "border-box" as const,
+    overflow: "hidden" as const,
   };
 
   const textStyle = {
