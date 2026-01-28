@@ -139,7 +139,20 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   >
                     Width
                   </Label>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-center">
+                    <button
+                      onClick={() => {
+                        const newWidth = Math.max(1, (block.width ?? 100) - 1);
+                        onBlockUpdate({
+                          ...block,
+                          width: newWidth,
+                        });
+                      }}
+                      className="p-1 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                      title="Decrease width"
+                    >
+                      <ChevronDown size={16} />
+                    </button>
                     <Input
                       id="titleWidth"
                       type="text"
@@ -165,6 +178,19 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                       }}
                       className="flex-1 focus:ring-valasys-orange focus:ring-2"
                     />
+                    <button
+                      onClick={() => {
+                        const newWidth = (block.width ?? 100) + 1;
+                        onBlockUpdate({
+                          ...block,
+                          width: newWidth,
+                        });
+                      }}
+                      className="p-1 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                      title="Increase width"
+                    >
+                      <ChevronUp size={16} />
+                    </button>
                     <select
                       value={block.widthUnit}
                       onChange={(e) =>
