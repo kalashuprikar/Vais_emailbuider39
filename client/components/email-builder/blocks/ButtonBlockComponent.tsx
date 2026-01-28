@@ -66,6 +66,10 @@ export const ButtonBlockComponent: React.FC<ButtonBlockComponentProps> = ({
             fontWeight: "bold",
             width: buttonWidth,
             textAlign: "center",
+            boxSizing: "border-box",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           }}
           disabled
         >
