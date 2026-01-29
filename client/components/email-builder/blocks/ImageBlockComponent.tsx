@@ -85,13 +85,23 @@ export const ImageBlockComponent: React.FC<ImageBlockComponentProps> = ({
 
   return (
     <div
+      ref={containerRef}
       className={`relative p-4 transition-all ${
         isSelected ? "ring-2 ring-valasys-orange" : ""
       }`}
       style={{ textAlign: block.alignment as any }}
     >
       {block.src ? (
-        <div style={{ textAlign: block.alignment as any, overflow: "hidden" }}>
+        <div
+          style={{
+            textAlign: block.alignment as any,
+            overflow: "hidden",
+            position: "relative",
+            display: "inline-block",
+            width: block.alignment === "center" ? "auto" : "auto",
+            margin: block.alignment === "center" ? "0 auto" : "0",
+          }}
+        >
           <img
             src={block.src}
             alt={block.alt || "Image"}
@@ -102,17 +112,36 @@ export const ImageBlockComponent: React.FC<ImageBlockComponentProps> = ({
                 block.heightUnit === "%"
                   ? `${block.height}${block.heightUnit}`
                   : `${block.height}px`,
-              display: block.alignment === "center" ? "block" : "inline",
-              margin: block.alignment === "center" ? "0 auto" : "0",
+              display: "block",
               maxWidth: "100%",
               objectFit: "contain",
               boxSizing: "border-box",
+              userSelect: "none",
             }}
             onError={(e) => {
               console.error("Image failed to load:", block.src);
               (e.target as HTMLImageElement).style.border = "2px solid red";
             }}
           />
+          {/* Resize Handle */}
+          {isSelected && (
+            <div
+              onMouseDown={handleResizeStart}
+              className={`absolute top-0 right-0 w-1.5 h-full cursor-col-resize transition-colors ${
+                isResizing
+                  ? "bg-valasys-orange"
+                  : "bg-valasys-orange/0 hover:bg-valasys-orange"
+              }`}
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                height: "100%",
+                width: "6px",
+              }}
+              title="Drag to resize image width"
+            />
+          )}
         </div>
       ) : (
         <label className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:bg-gray-50">
