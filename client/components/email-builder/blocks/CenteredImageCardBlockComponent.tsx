@@ -237,16 +237,10 @@ export const CenteredImageCardBlockComponent: React.FC<
 
   return (
     <div
-      className={`rounded-lg group transition-all ${
-        isSelected ? "ring-2 ring-valasys-orange" : ""
-      }`}
-      onMouseEnter={() => setIsHoveringSection(true)}
-      onMouseLeave={() => setIsHoveringSection(false)}
+      className="rounded-lg group transition-all"
       style={{
         backgroundColor: block.backgroundColor,
-        border: isHoveringSection
-          ? "2px dashed rgb(255, 106, 0)"
-          : `${block.borderWidth}px solid ${block.borderColor}`,
+        border: `${block.borderWidth}px solid ${block.borderColor}`,
         borderRadius: `${block.borderRadius}px`,
         margin: `${block.margin}px`,
         padding: `${block.padding}px`,
