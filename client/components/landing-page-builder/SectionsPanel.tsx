@@ -37,7 +37,7 @@ const sectionTemplates: SectionTemplate[] = [
     name: "Meet Framer",
     description: "Internet canvas.",
     preview: (isSelected) => (
-      <div className={`bg-white ${isSelected ? 'border border-gray-900' : 'border border-gray-200 hover:border-dashed hover:border-gray-400'} rounded-xl p-6 h-40 flex flex-col items-center justify-between transition-all`}>
+      <div className={`bg-white ${isSelected ? 'border-4 border-double border-gray-900' : 'border border-gray-200 hover:border-dashed hover:border-gray-400'} rounded-xl p-6 h-40 flex flex-col items-center justify-between transition-all`}>
         <div className="text-center">
           <div className="text-sm font-semibold text-gray-900">Meet Framer</div>
           <div className="text-xs text-gray-600 mt-1">Internet canvas.</div>
