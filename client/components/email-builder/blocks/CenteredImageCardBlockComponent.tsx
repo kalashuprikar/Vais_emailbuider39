@@ -444,7 +444,12 @@ export const CenteredImageCardBlockComponent: React.FC<
                 <div className="flex justify-center">
                   <button
                     onClick={() => setEditMode("buttonText")}
-                    className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all hover:border-2 hover:border-dotted hover:border-white"
+                    onMouseEnter={() => setIsHoveringButton(true)}
+                    onMouseLeave={() => setIsHoveringButton(false)}
+                    className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
+                    style={{
+                      border: isHoveringButton ? "2px dashed white" : "2px solid transparent",
+                    }}
                   >
                     {block.buttonText}
                   </button>
