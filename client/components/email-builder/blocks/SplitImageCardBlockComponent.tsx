@@ -272,6 +272,26 @@ export const SplitImageCardBlockComponent: React.FC<
           >
             Swap Image Position
           </Button>
+          <Button
+            onClick={handleCopyBlock}
+            variant="outline"
+            size="sm"
+            className="text-xs"
+            title="Copy block"
+          >
+            <Copy className="w-4 h-4" />
+          </Button>
+          {onBlockDelete && (
+            <Button
+              onClick={onBlockDelete}
+              variant="outline"
+              size="sm"
+              className="text-xs text-red-600 hover:bg-red-50"
+              title="Delete block"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          )}
         </div>
       </div>
     </div>
