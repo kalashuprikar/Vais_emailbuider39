@@ -86,14 +86,17 @@ export const CenteredImageCardBlockComponent: React.FC<
     };
 
     return (
-      <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-2 shadow-sm mt-2 w-fit">
+      <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-2 shadow-sm mt-2 w-fit" onMouseDown={(e) => e.preventDefault()}>
         {sectionType !== "image" && (
           <Button
             variant="ghost"
             size="sm"
             className="h-7 w-7 p-0 hover:bg-gray-100"
             title="Add"
-            onClick={handleAdd}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              handleAdd();
+            }}
           >
             <Plus className="w-3 h-3 text-gray-700" />
           </Button>
@@ -104,7 +107,10 @@ export const CenteredImageCardBlockComponent: React.FC<
           size="sm"
           className="h-7 w-7 p-0 hover:bg-gray-100"
           title="Copy"
-          onClick={handleCopy}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            handleCopy();
+          }}
         >
           <Copy className="w-3 h-3 text-gray-700" />
         </Button>
@@ -114,7 +120,10 @@ export const CenteredImageCardBlockComponent: React.FC<
           size="sm"
           className="h-7 w-7 p-0 hover:bg-red-100"
           title="Delete"
-          onClick={handleDelete}
+          onMouseDown={(e) => {
+            e.preventDefault();
+            handleDelete();
+          }}
         >
           <Trash2 className="w-3 h-3 text-red-600" />
         </Button>
