@@ -221,8 +221,8 @@ const sectionTemplates: SectionTemplate[] = [
     id: "template-9",
     name: "Testimonial",
     description: "Customer quote",
-    preview: (
-      <div className="bg-white border border-gray-200 rounded-xl p-6 h-40 flex flex-col items-center justify-center gap-4">
+    preview: (isSelected) => (
+      <div className={`bg-white ${isSelected ? 'border border-gray-900' : 'border border-gray-200 hover:border-dashed hover:border-gray-400'} rounded-xl p-6 h-40 flex flex-col items-center justify-center gap-4 transition-all`}>
         <div className="text-center">
           <div className="text-sm font-semibold text-gray-900 leading-relaxed">
             "Framer is one of the best web design builders I have come across"
