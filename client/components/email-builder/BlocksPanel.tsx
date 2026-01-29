@@ -120,11 +120,15 @@ interface SectionsPanelProps {
 interface DraggableTemplateProps {
   template: Template;
   onAddBlocks: (blocks: ContentBlock[]) => void;
+  isSelected: boolean;
+  onSelect: (templateId: string) => void;
 }
 
 const DraggableTemplateCard: React.FC<DraggableTemplateProps> = ({
   template,
   onAddBlocks,
+  isSelected,
+  onSelect,
 }) => {
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -139,21 +143,26 @@ const DraggableTemplateCard: React.FC<DraggableTemplateProps> = ({
     [template],
   );
 
+  const handleClick = () => {
+    onSelect(template.id);
+    onAddBlocks(template.blocks());
+  };
+
   return (
     <div
       ref={drag}
-      className={`flex flex-col border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-move ${
-        isDragging ? "opacity-50" : ""
-      }`}
+      className={`flex flex-col rounded-lg overflow-hidden transition-all cursor-move bg-white ${
+        isSelected ? "border-2 border-valasys-orange" : "border border-gray-200"
+      } ${isDragging ? "opacity-50" : ""}`}
     >
-      <div className="w-full h-32 bg-gray-200 overflow-hidden">
+      <div className="w-full h-40 overflow-hidden">
         <img
           src={template.preview}
           alt={template.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover bg-white"
         />
       </div>
-      <div className="p-3 flex flex-col flex-1">
+      <div className="p-3 flex flex-col h-40 bg-white">
         <h3 className="text-sm font-semibold text-gray-900 mb-1">
           {template.title}
         </h3>
@@ -161,7 +170,7 @@ const DraggableTemplateCard: React.FC<DraggableTemplateProps> = ({
           {template.description}
         </p>
         <button
-          onClick={() => onAddBlocks(template.blocks())}
+          onClick={handleClick}
           className="w-full px-3 py-2 bg-valasys-orange text-white text-xs font-medium rounded hover:bg-orange-600 transition-colors"
         >
           Use template
@@ -179,6 +188,9 @@ const SectionsPanel: React.FC<SectionsPanelProps> = ({ onAddBlock }) => {
       "Headers",
       "Footer & signatures",
     ]),
+  );
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
+    null,
   );
 
   const textImageTemplates: Template[] = [
@@ -363,7 +375,7 @@ const SectionsPanel: React.FC<SectionsPanelProps> = ({ onAddBlock }) => {
             </button>
 
             {expandedSections.has(section.title) && (
-              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+              <div className="px-4 py-3 bg-white border-t border-gray-200">
                 {section.templates ? (
                   <div className="flex flex-col gap-3">
                     {section.templates.map((template) => (
@@ -371,6 +383,8 @@ const SectionsPanel: React.FC<SectionsPanelProps> = ({ onAddBlock }) => {
                         key={template.id}
                         template={template}
                         onAddBlocks={handleAddBlocks}
+                        isSelected={selectedTemplateId === template.id}
+                        onSelect={setSelectedTemplateId}
                       />
                     ))}
                   </div>
