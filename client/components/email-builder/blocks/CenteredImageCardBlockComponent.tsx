@@ -4,7 +4,6 @@ import { ContentBlock } from "../types";
 import { Upload, Edit2, Plus, Copy, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
 interface CenteredImageCardBlockComponentProps {
   block: CenteredImageCardBlock;
