@@ -168,7 +168,7 @@ export const CenteredImageCardBlockComponent: React.FC<
 
   return (
     <div
-      className={`rounded-lg transition-all group ${
+      className={`rounded-lg group ${
         isSelected ? "ring-2 ring-valasys-orange" : ""
       } hover:border-2 hover:border-dotted hover:border-gray-400`}
       style={{
