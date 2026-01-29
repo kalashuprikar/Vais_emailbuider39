@@ -377,6 +377,8 @@ export interface CenteredImageCardBlock {
   padding: number;
   margin: number;
   visibility: "all" | "desktop" | "mobile";
+  width?: number;
+  height?: number;
 }
 
 export interface SplitImageCardBlock {
