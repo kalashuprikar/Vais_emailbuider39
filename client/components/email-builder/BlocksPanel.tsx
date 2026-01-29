@@ -120,6 +120,8 @@ interface SectionsPanelProps {
 interface DraggableTemplateProps {
   template: Template;
   onAddBlocks: (blocks: ContentBlock[]) => void;
+  isSelected: boolean;
+  onSelect: (templateId: string) => void;
 }
 
 const DraggableTemplateCard: React.FC<DraggableTemplateProps> = ({
