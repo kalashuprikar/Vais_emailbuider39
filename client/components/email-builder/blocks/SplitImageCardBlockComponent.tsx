@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SplitImageCardBlock } from "../types";
-import { Upload, Edit2 } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -94,38 +94,7 @@ export const SplitImageCardBlockComponent: React.FC<
 
           <div className={isImageLeft ? "md:w-3/5" : "md:w-3/5 order-first"}>
             <div className="space-y-3 p-4">
-              {block.label && (
-                <div>
-                  <label className="text-xs font-semibold text-gray-600 flex items-center gap-2">
-                    <Edit2 className="w-3 h-3" />
-                    Label
-                  </label>
-                  {editMode === "label" ? (
-                    <Input
-                      value={block.label}
-                      onChange={(e) =>
-                        handleFieldChange("label", e.target.value)
-                      }
-                      onBlur={() => setEditMode(null)}
-                      autoFocus
-                      className="text-xs"
-                    />
-                  ) : (
-                    <span
-                      onClick={() => setEditMode("label")}
-                      className="inline-block px-3 py-1 bg-valasys-orange text-white text-xs font-bold rounded cursor-pointer hover:bg-orange-600"
-                    >
-                      {block.label}
-                    </span>
-                  )}
-                </div>
-              )}
-
               <div>
-                <label className="text-xs font-semibold text-gray-600 flex items-center gap-2">
-                  <Edit2 className="w-3 h-3" />
-                  Title
-                </label>
                 {editMode === "title" ? (
                   <Input
                     value={block.title}
@@ -137,7 +106,7 @@ export const SplitImageCardBlockComponent: React.FC<
                 ) : (
                   <p
                     onClick={() => setEditMode("title")}
-                    className="font-bold text-lg text-gray-900 cursor-pointer hover:text-valasys-orange p-2 rounded hover:bg-orange-50"
+                    className="font-bold text-lg text-gray-900 cursor-pointer p-2 rounded"
                   >
                     {block.title}
                   </p>
@@ -145,10 +114,6 @@ export const SplitImageCardBlockComponent: React.FC<
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-600 flex items-center gap-2">
-                  <Edit2 className="w-3 h-3" />
-                  Description
-                </label>
                 {editMode === "description" ? (
                   <textarea
                     value={block.description}
@@ -162,7 +127,7 @@ export const SplitImageCardBlockComponent: React.FC<
                 ) : (
                   <p
                     onClick={() => setEditMode("description")}
-                    className="text-sm text-gray-600 cursor-pointer hover:text-valasys-orange p-2 rounded hover:bg-orange-50 whitespace-pre-line"
+                    className="text-sm text-gray-600 cursor-pointer p-2 rounded whitespace-pre-line"
                   >
                     {block.description}
                   </p>
@@ -170,10 +135,6 @@ export const SplitImageCardBlockComponent: React.FC<
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-600 flex items-center gap-2">
-                  <Edit2 className="w-3 h-3" />
-                  Button Text
-                </label>
                 {editMode === "buttonText" ? (
                   <Input
                     value={block.buttonText}
@@ -194,10 +155,6 @@ export const SplitImageCardBlockComponent: React.FC<
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-gray-600 flex items-center gap-2">
-                  <Edit2 className="w-3 h-3" />
-                  Button Link
-                </label>
                 {editMode === "buttonLink" ? (
                   <Input
                     value={block.buttonLink}
@@ -212,7 +169,7 @@ export const SplitImageCardBlockComponent: React.FC<
                 ) : (
                   <p
                     onClick={() => setEditMode("buttonLink")}
-                    className="text-xs text-gray-500 cursor-pointer hover:text-valasys-orange p-2 rounded hover:bg-orange-50 break-all"
+                    className="text-xs text-gray-500 cursor-pointer p-2 rounded break-all"
                   >
                     {block.buttonLink || "No link set"}
                   </p>
