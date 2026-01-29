@@ -166,18 +166,25 @@ export const SplitImageCardBlockComponent: React.FC<
       <div className="max-w-2xl mx-auto">
         <div className="flex flex-col md:flex-row gap-4 items-stretch">
           {isImageLeft && (
-            <div className="md:w-2/5 relative group"
+            <div className="md:w-2/5"
               onMouseEnter={() => block.image && setIsHoveringImage(true)}
               onMouseLeave={() => setIsHoveringImage(false)}
             >
               {block.image ? (
-                <>
+                <div className="relative group">
                   <img
                     src={block.image}
                     alt={block.imageAlt}
                     className="w-full h-auto rounded"
                   />
-                  <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-40 opacity-0 group-hover:opacity-100 transition-all cursor-pointer rounded">
+                  <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-40 opacity-0 group-hover:opacity-100 transition-all cursor-pointer rounded"
+                    onClick={(e) => {
+                      // Only open dialog if clicking on the label, not on toolbar buttons
+                      if ((e.target as HTMLElement).tagName === 'LABEL') {
+                        (e.currentTarget.querySelector('input[type="file"]') as HTMLInputElement)?.click();
+                      }
+                    }}
+                  >
                     <Upload className="w-6 h-6 text-white" />
                     <input
                       type="file"
@@ -186,22 +193,29 @@ export const SplitImageCardBlockComponent: React.FC<
                       className="hidden"
                     />
                   </label>
-                </>
+                  {isHoveringImage && (
+                    <div className="absolute bottom-0 left-0 right-0 z-50">
+                      <SectionToolbar sectionType="image" />
+                    </div>
+                  )}
+                </div>
               ) : (
-                <label className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:bg-gray-50">
-                  <div className="flex flex-col items-center justify-center">
-                    <Upload className="w-6 h-6 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-500">Click to upload</p>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
-                </label>
+                <>
+                  <label className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:bg-gray-50">
+                    <div className="flex flex-col items-center justify-center">
+                      <Upload className="w-6 h-6 text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-500">Click to upload</p>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                  {isHoveringImage && <SectionToolbar sectionType="image" />}
+                </>
               )}
-              {isHoveringImage && <SectionToolbar sectionType="image" />}
             </div>
           )}
 
