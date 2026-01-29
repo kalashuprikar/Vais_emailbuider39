@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { SplitImageCardBlock } from "../types";
-import { Upload } from "lucide-react";
+import { Upload, Copy, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface SplitImageCardBlockComponentProps {
   block: SplitImageCardBlock;
   isSelected: boolean;
   onBlockUpdate: (block: SplitImageCardBlock) => void;
+  onBlockDelete?: () => void;
 }
 
 export const SplitImageCardBlockComponent: React.FC<
