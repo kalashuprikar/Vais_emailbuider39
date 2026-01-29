@@ -14,6 +14,9 @@ export const SplitImageCardBlockComponent: React.FC<
   SplitImageCardBlockComponentProps
 > = ({ block, isSelected, onBlockUpdate }) => {
   const [editMode, setEditMode] = useState<string | null>(null);
+  const [isHoveringTitle, setIsHoveringTitle] = useState(false);
+  const [isHoveringDescription, setIsHoveringDescription] = useState(false);
+  const [isHoveringButton, setIsHoveringButton] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
