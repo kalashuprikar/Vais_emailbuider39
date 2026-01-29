@@ -157,7 +157,7 @@ const DraggableTemplateCard: React.FC<DraggableTemplateProps> = ({
           : "border border-gray-200 hover:border-dashed hover:border-gray-400"
       } ${isDragging ? "opacity-50" : ""}`}
     >
-      <div className="w-full h-40 bg-gray-200 overflow-hidden">
+      <div className="w-full h-40 overflow-hidden bg-white">
         <img
           src={template.preview}
           alt={template.title}
