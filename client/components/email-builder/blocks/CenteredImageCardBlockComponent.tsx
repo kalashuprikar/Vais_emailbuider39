@@ -448,7 +448,7 @@ export const CenteredImageCardBlockComponent: React.FC<
                     onMouseLeave={() => setIsHoveringButton(false)}
                     className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
                     style={{
-                      border: isHoveringButton ? "2px dashed white" : "2px solid transparent",
+                      border: isHoveringButton ? "2px dashed white" : "none",
                     }}
                   >
                     {block.buttonText}
