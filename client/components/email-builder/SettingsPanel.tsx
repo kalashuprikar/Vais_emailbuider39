@@ -5854,6 +5854,91 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 </div>
 
                 <div>
+                  <Label className="text-xs font-semibold text-gray-700 mb-2 block">
+                    Card Image
+                  </Label>
+                  {selectedCard.image ? (
+                    <div className="space-y-2">
+                      <div className="w-full rounded border border-gray-300 overflow-hidden">
+                        <img
+                          src={selectedCard.image}
+                          alt={selectedCard.imageAlt || "Card image"}
+                          className="w-full h-32 object-cover"
+                        />
+                      </div>
+                      <button
+                        onClick={() => {
+                          handleCardUpdate("image", "");
+                          handleCardUpdate("imageAlt", "");
+                          handleCardUpdate("imageWidth", undefined);
+                          handleCardUpdate("imageHeight", undefined);
+                        }}
+                        className="w-full px-3 py-2 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
+                      >
+                        Remove Image
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="block w-full px-3 py-3 bg-gray-100 rounded text-center cursor-pointer hover:bg-gray-200 transition-colors border border-gray-300">
+                      <p className="text-xs text-gray-600">Click to upload</p>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                              handleCardUpdate(
+                                "image",
+                                event.target?.result as string,
+                              );
+                              handleCardUpdate("imageAlt", file.name);
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+
+                <div>
+                  <Label className="text-xs font-semibold text-gray-700 mb-2 block">
+                    Image Link Type
+                  </Label>
+                  <select
+                    value={selectedCard.imageLinkType || "url"}
+                    onChange={(e) =>
+                      handleCardUpdate("imageLinkType", e.target.value)
+                    }
+                    className="w-full px-3 py-2 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-valasys-orange"
+                  >
+                    <option value="url">URL</option>
+                    <option value="email">Email</option>
+                  </select>
+                </div>
+
+                <div>
+                  <Label className="text-xs font-semibold text-gray-700 mb-2 block">
+                    Image Link
+                  </Label>
+                  <Input
+                    value={selectedCard.imageLink || ""}
+                    onChange={(e) =>
+                      handleCardUpdate("imageLink", e.target.value)
+                    }
+                    placeholder={
+                      selectedCard.imageLinkType === "email"
+                        ? "example@email.com"
+                        : "https://example.com"
+                    }
+                    className="text-xs focus:ring-valasys-orange focus:ring-2"
+                  />
+                </div>
+
+                <div>
                   <h4 className="text-xs font-bold text-gray-900 mb-3">
                     Styling
                   </h4>

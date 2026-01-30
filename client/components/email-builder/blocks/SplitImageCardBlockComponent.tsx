@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { SplitImageCardBlock } from "../types";
 import { Upload, Copy, Trash2, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -21,6 +21,13 @@ export const SplitImageCardBlockComponent: React.FC<
   const [editMode, setEditMode] = useState<string | null>(null);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeHandle, setResizeHandle] = useState<string | null>(null);
+  const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
+  const [startWidth, setStartWidth] = useState(0);
+  const [startHeight, setStartHeight] = useState(0);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
 
   // Initialize sections from old format or arrays
   const titles = useMemo(
@@ -71,6 +78,87 @@ export const SplitImageCardBlockComponent: React.FC<
       imagePosition: block.imagePosition === "left" ? "right" : "left",
     });
   };
+
+  const handleResizeStart = (e: React.MouseEvent, handle: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    setResizeHandle(handle);
+    setStartX(e.clientX);
+    setStartY(e.clientY);
+    setStartWidth(block.width || 300);
+    setStartHeight(block.height || 200);
+  };
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!resizeHandle) return;
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      let newWidth = startWidth;
+      let newHeight = startHeight;
+
+      // Handle different resize handles
+      switch (resizeHandle) {
+        case "se": // Southeast corner
+          newWidth = Math.max(100, startWidth + deltaX);
+          newHeight = Math.max(100, startHeight + deltaY);
+          break;
+        case "sw": // Southwest corner
+          newWidth = Math.max(100, startWidth - deltaX);
+          newHeight = Math.max(100, startHeight + deltaY);
+          break;
+        case "ne": // Northeast corner
+          newWidth = Math.max(100, startWidth + deltaX);
+          newHeight = Math.max(100, startHeight - deltaY);
+          break;
+        case "nw": // Northwest corner
+          newWidth = Math.max(100, startWidth - deltaX);
+          newHeight = Math.max(100, startHeight - deltaY);
+          break;
+        case "e": // East
+          newWidth = Math.max(100, startWidth + deltaX);
+          break;
+        case "w": // West
+          newWidth = Math.max(100, startWidth - deltaX);
+          break;
+        case "n": // North
+          newHeight = Math.max(100, startHeight - deltaY);
+          break;
+        case "s": // South
+          newHeight = Math.max(100, startHeight + deltaY);
+          break;
+      }
+
+      onBlockUpdate({ ...block, width: newWidth, height: newHeight });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      setResizeHandle(null);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [
+    isResizing,
+    resizeHandle,
+    startX,
+    startY,
+    startWidth,
+    startHeight,
+    block,
+    onBlockUpdate,
+  ]);
 
   const handleAddTitle = () => {
     const newTitles = [...titles, { id: generateId(), content: "" }];
@@ -294,6 +382,7 @@ export const SplitImageCardBlockComponent: React.FC<
           {isImageLeft && (
             <div
               className="md:w-2/5"
+              ref={imageContainerRef}
               onMouseEnter={() => block.image && setIsHoveringImage(true)}
               onMouseLeave={() => setIsHoveringImage(false)}
             >
@@ -302,7 +391,14 @@ export const SplitImageCardBlockComponent: React.FC<
                   <img
                     src={block.image}
                     alt={block.imageAlt}
-                    className="w-full h-auto rounded"
+                    className="rounded"
+                    style={{
+                      width: block.width ? `${block.width}px` : "auto",
+                      height: block.height ? `${block.height}px` : "auto",
+                      display: "block",
+                      maxWidth: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-40 opacity-0 group-hover:opacity-100 transition-all rounded">
                     <div className="flex gap-3 items-center">
@@ -338,6 +434,62 @@ export const SplitImageCardBlockComponent: React.FC<
                       </button>
                     </div>
                   </div>
+
+                  {/* Resize Handles - Only show when hovering */}
+                  {isHoveringImage && (
+                    <>
+                      {[
+                        {
+                          pos: "nw",
+                          cursor: "nw-resize",
+                          top: "-4px",
+                          left: "-4px",
+                        },
+                        {
+                          pos: "ne",
+                          cursor: "ne-resize",
+                          top: "-4px",
+                          right: "-4px",
+                        },
+                        {
+                          pos: "sw",
+                          cursor: "sw-resize",
+                          bottom: "-4px",
+                          left: "-4px",
+                        },
+                        {
+                          pos: "se",
+                          cursor: "se-resize",
+                          bottom: "-4px",
+                          right: "-4px",
+                        },
+                      ].map((handle) => (
+                        <div
+                          key={handle.pos}
+                          onMouseDown={(e) => handleResizeStart(e, handle.pos)}
+                          style={{
+                            position: "absolute",
+                            width: "12px",
+                            height: "12px",
+                            backgroundColor: "#FF6B35",
+                            border: "2px solid white",
+                            borderRadius: "2px",
+                            cursor: handle.cursor,
+                            zIndex: 40,
+                            ...((handle as any).top && { top: handle.top }),
+                            ...((handle as any).bottom && {
+                              bottom: handle.bottom,
+                            }),
+                            ...((handle as any).left && { left: handle.left }),
+                            ...((handle as any).right && {
+                              right: handle.right,
+                            }),
+                          }}
+                          title={`Drag to resize (${handle.pos})`}
+                        />
+                      ))}
+                    </>
+                  )}
                 </div>
               ) : (
                 <label className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:bg-gray-50">
@@ -572,7 +724,14 @@ export const SplitImageCardBlockComponent: React.FC<
                   <img
                     src={block.image}
                     alt={block.imageAlt}
-                    className="w-full h-auto rounded"
+                    className="rounded"
+                    style={{
+                      width: block.width ? `${block.width}px` : "auto",
+                      height: block.height ? `${block.height}px` : "auto",
+                      display: "block",
+                      maxWidth: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-40 opacity-0 group-hover:opacity-100 transition-all rounded">
                     <div className="flex gap-3 items-center">
@@ -608,6 +767,62 @@ export const SplitImageCardBlockComponent: React.FC<
                       </button>
                     </div>
                   </div>
+
+                  {/* Resize Handles - Only show when hovering */}
+                  {isHoveringImage && (
+                    <>
+                      {[
+                        {
+                          pos: "nw",
+                          cursor: "nw-resize",
+                          top: "-4px",
+                          left: "-4px",
+                        },
+                        {
+                          pos: "ne",
+                          cursor: "ne-resize",
+                          top: "-4px",
+                          right: "-4px",
+                        },
+                        {
+                          pos: "sw",
+                          cursor: "sw-resize",
+                          bottom: "-4px",
+                          left: "-4px",
+                        },
+                        {
+                          pos: "se",
+                          cursor: "se-resize",
+                          bottom: "-4px",
+                          right: "-4px",
+                        },
+                      ].map((handle) => (
+                        <div
+                          key={handle.pos}
+                          onMouseDown={(e) => handleResizeStart(e, handle.pos)}
+                          style={{
+                            position: "absolute",
+                            width: "12px",
+                            height: "12px",
+                            backgroundColor: "#FF6B35",
+                            border: "2px solid white",
+                            borderRadius: "2px",
+                            cursor: handle.cursor,
+                            zIndex: 40,
+                            ...((handle as any).top && { top: handle.top }),
+                            ...((handle as any).bottom && {
+                              bottom: handle.bottom,
+                            }),
+                            ...((handle as any).left && { left: handle.left }),
+                            ...((handle as any).right && {
+                              right: handle.right,
+                            }),
+                          }}
+                          title={`Drag to resize (${handle.pos})`}
+                        />
+                      ))}
+                    </>
+                  )}
                 </div>
               ) : (
                 <label className="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded cursor-pointer hover:bg-gray-50">

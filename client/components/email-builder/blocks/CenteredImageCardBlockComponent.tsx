@@ -395,13 +395,14 @@ export const CenteredImageCardBlockComponent: React.FC<
                 src={block.image}
                 alt={block.imageAlt}
                 onClick={() => setEditMode("image")}
-                className="w-full rounded-lg cursor-pointer"
+                className="rounded-lg cursor-pointer"
                 crossOrigin="anonymous"
                 style={{
-                  width: "100%",
-                  height: "auto",
+                  width: block.width ? `${block.width}px` : "auto",
+                  height: block.height ? `${block.height}px` : "auto",
                   display: "block",
                   maxWidth: "100%",
+                  objectFit: "cover",
                 }}
                 onError={(e) => {
                   console.error("Image failed to load:", block.image);
