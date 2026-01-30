@@ -909,11 +909,25 @@ export function renderBlockToHTML(block: ContentBlock): string {
       const cardsHtml = twoColBlock.cards
         ?.map(
           (card: any) => {
-            const imageHtml = card.image
-              ? `<div style="padding: 12px;">
-                  <img src="${card.image}" alt="${card.imageAlt || ""}" style="width: 100%; height: auto; display: block; border-radius: ${card.borderRadius}px; object-fit: cover; border: none;" />
-                </div>`
-              : "";
+            let imageHtml = "";
+            if (card.image) {
+              const imageTag = `<img src="${card.image}" alt="${card.imageAlt || ""}" style="width: 100%; height: auto; display: block; border-radius: ${card.borderRadius}px; object-fit: cover; border: none; cursor: pointer;" />`;
+              if (card.imageLink) {
+                const href =
+                  card.imageLinkType === "email"
+                    ? `mailto:${card.imageLink}`
+                    : card.imageLink;
+                imageHtml = `<div style="padding: 12px;">
+                  <a href="${href}" style="text-decoration: none; display: block;">
+                    ${imageTag}
+                  </a>
+                </div>`;
+              } else {
+                imageHtml = `<div style="padding: 12px;">
+                  ${imageTag}
+                </div>`;
+              }
+            }
             return `<div style="width: 48%; display: inline-block; vertical-align: top; padding-right: 10px; box-sizing: border-box;">
               <div style="background-color: ${card.backgroundColor}; color: ${card.textColor}; border-radius: ${card.borderRadius}px; margin: ${card.margin}px; overflow: hidden; border: none;">
                 ${imageHtml}
