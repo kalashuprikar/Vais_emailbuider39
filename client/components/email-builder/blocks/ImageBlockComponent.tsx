@@ -103,34 +103,6 @@ export const ImageBlockComponent: React.FC<ImageBlockComponentProps> = ({
       }`}
       style={{ textAlign: block.alignment as any }}
     >
-      {isSelected && block.src && (
-        <div className="absolute top-2 right-2 flex gap-1 items-center z-10">
-          {onDuplicate && (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                onDuplicate(block, blockIndex + 1);
-              }}
-              className="bg-blue-600 text-white p-1 rounded cursor-pointer hover:bg-blue-700 transition-colors"
-              title="Copy block"
-            >
-              <Copy className="w-3 h-3" />
-            </div>
-          )}
-          {onDelete && (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete(block.id);
-              }}
-              className="bg-red-600 text-white p-1 rounded cursor-pointer hover:bg-red-700 transition-colors"
-              title="Delete block"
-            >
-              <Trash2 className="w-3 h-3" />
-            </div>
-          )}
-        </div>
-      )}
       {block.src ? (
         <div
           style={{
@@ -140,6 +112,8 @@ export const ImageBlockComponent: React.FC<ImageBlockComponentProps> = ({
             width: block.alignment === "center" ? "auto" : "auto",
             margin: block.alignment === "center" ? "0 auto" : "0",
           }}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
         >
           <img
             src={block.src}
