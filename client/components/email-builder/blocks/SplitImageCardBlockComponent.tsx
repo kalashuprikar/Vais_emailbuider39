@@ -13,7 +13,8 @@ interface SplitImageCardBlockComponentProps {
 }
 
 // Helper to generate unique IDs
-const generateId = () => `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+const generateId = () =>
+  `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 export const SplitImageCardBlockComponent: React.FC<
   SplitImageCardBlockComponentProps
@@ -28,7 +29,7 @@ export const SplitImageCardBlockComponent: React.FC<
     () =>
       block.titles ||
       (block.title ? [{ id: "title-0", content: block.title }] : []),
-    [block.titles, block.title]
+    [block.titles, block.title],
   );
 
   const descriptions = useMemo(
@@ -37,7 +38,7 @@ export const SplitImageCardBlockComponent: React.FC<
       (block.description
         ? [{ id: "description-0", content: block.description }]
         : []),
-    [block.descriptions, block.description]
+    [block.descriptions, block.description],
   );
 
   const buttons = useMemo(
@@ -52,7 +53,7 @@ export const SplitImageCardBlockComponent: React.FC<
             },
           ]
         : []),
-    [block.buttons, block.buttonText, block.buttonLink]
+    [block.buttons, block.buttonText, block.buttonLink],
   );
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,9 +98,14 @@ export const SplitImageCardBlockComponent: React.FC<
   };
 
   const handleAddDescription = () => {
-    const newDescriptions = [...descriptions, { id: generateId(), content: "" }];
+    const newDescriptions = [
+      ...descriptions,
+      { id: generateId(), content: "" },
+    ];
     onBlockUpdate({ ...block, descriptions: newDescriptions });
-    setEditMode(`description-${newDescriptions[newDescriptions.length - 1].id}`);
+    setEditMode(
+      `description-${newDescriptions[newDescriptions.length - 1].id}`,
+    );
   };
 
   const handleAddButton = () => {
@@ -109,22 +115,20 @@ export const SplitImageCardBlockComponent: React.FC<
   };
 
   const handleUpdateTitle = (id: string, content: string) => {
-    const newTitles = titles.map((t) =>
-      t.id === id ? { ...t, content } : t
-    );
+    const newTitles = titles.map((t) => (t.id === id ? { ...t, content } : t));
     onBlockUpdate({ ...block, titles: newTitles });
   };
 
   const handleUpdateDescription = (id: string, content: string) => {
     const newDescriptions = descriptions.map((d) =>
-      d.id === id ? { ...d, content } : d
+      d.id === id ? { ...d, content } : d,
     );
     onBlockUpdate({ ...block, descriptions: newDescriptions });
   };
 
   const handleUpdateButton = (id: string, text: string, link: string) => {
     const newButtons = buttons.map((b) =>
-      b.id === id ? { ...b, text, link } : b
+      b.id === id ? { ...b, text, link } : b,
     );
     onBlockUpdate({ ...block, buttons: newButtons });
   };
@@ -142,14 +146,18 @@ export const SplitImageCardBlockComponent: React.FC<
 
       // Copy to clipboard with styling
       const styledContent = `<h2 style="font-weight: bold; font-size: 18px; color: rgb(17, 24, 39);">${titleToDuplicate.content}</h2>`;
-      navigator.clipboard.write([
-        new ClipboardItem({
-          "text/html": new Blob([styledContent], { type: "text/html" }),
-          "text/plain": new Blob([titleToDuplicate.content], { type: "text/plain" })
-        })
-      ]).catch(() => {
-        navigator.clipboard.writeText(titleToDuplicate.content);
-      });
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            "text/html": new Blob([styledContent], { type: "text/html" }),
+            "text/plain": new Blob([titleToDuplicate.content], {
+              type: "text/plain",
+            }),
+          }),
+        ])
+        .catch(() => {
+          navigator.clipboard.writeText(titleToDuplicate.content);
+        });
     }
   };
 
@@ -166,14 +174,18 @@ export const SplitImageCardBlockComponent: React.FC<
 
       // Copy to clipboard with styling
       const styledContent = `<p style="font-size: 14px; color: rgb(75, 85, 99); white-space: pre-wrap;">${descToDuplicate.content}</p>`;
-      navigator.clipboard.write([
-        new ClipboardItem({
-          "text/html": new Blob([styledContent], { type: "text/html" }),
-          "text/plain": new Blob([descToDuplicate.content], { type: "text/plain" })
-        })
-      ]).catch(() => {
-        navigator.clipboard.writeText(descToDuplicate.content);
-      });
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            "text/html": new Blob([styledContent], { type: "text/html" }),
+            "text/plain": new Blob([descToDuplicate.content], {
+              type: "text/plain",
+            }),
+          }),
+        ])
+        .catch(() => {
+          navigator.clipboard.writeText(descToDuplicate.content);
+        });
     }
   };
 
@@ -190,14 +202,21 @@ export const SplitImageCardBlockComponent: React.FC<
 
       // Copy to clipboard with styling
       const styledContent = `<a href="${buttonToDuplicate.link}" style="display: inline-block; padding: 8px 16px; background-color: rgb(255, 106, 35); color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px;">${buttonToDuplicate.text}</a>`;
-      navigator.clipboard.write([
-        new ClipboardItem({
-          "text/html": new Blob([styledContent], { type: "text/html" }),
-          "text/plain": new Blob([`${buttonToDuplicate.text} (${buttonToDuplicate.link})`], { type: "text/plain" })
-        })
-      ]).catch(() => {
-        navigator.clipboard.writeText(`${buttonToDuplicate.text} (${buttonToDuplicate.link})`);
-      });
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            "text/html": new Blob([styledContent], { type: "text/html" }),
+            "text/plain": new Blob(
+              [`${buttonToDuplicate.text} (${buttonToDuplicate.link})`],
+              { type: "text/plain" },
+            ),
+          }),
+        ])
+        .catch(() => {
+          navigator.clipboard.writeText(
+            `${buttonToDuplicate.text} (${buttonToDuplicate.link})`,
+          );
+        });
     }
   };
 
@@ -394,13 +413,13 @@ export const SplitImageCardBlockComponent: React.FC<
                         </>
                       ) : (
                         <div
-                          onMouseEnter={() => setHoveredSection(`title-${title.id}`)}
+                          onMouseEnter={() =>
+                            setHoveredSection(`title-${title.id}`)
+                          }
                           onMouseLeave={() => setHoveredSection(null)}
                         >
                           <p
-                            onClick={() =>
-                              setEditMode(`title-${title.id}`)
-                            }
+                            onClick={() => setEditMode(`title-${title.id}`)}
                             className="font-bold text-lg text-gray-900 cursor-pointer p-3 rounded transition-all"
                             style={{
                               border:
@@ -428,10 +447,7 @@ export const SplitImageCardBlockComponent: React.FC<
                           <textarea
                             value={desc.content}
                             onChange={(e) =>
-                              handleUpdateDescription(
-                                desc.id,
-                                e.target.value
-                              )
+                              handleUpdateDescription(desc.id, e.target.value)
                             }
                             onBlur={() =>
                               setTimeout(() => setEditMode(null), 200)
@@ -453,17 +469,15 @@ export const SplitImageCardBlockComponent: React.FC<
                           />
                           <SectionToolbar
                             onAdd={handleAddDescription}
-                            onCopy={() =>
-                              handleDuplicateDescription(desc.id)
-                            }
-                            onDelete={() =>
-                              handleDeleteDescription(desc.id)
-                            }
+                            onCopy={() => handleDuplicateDescription(desc.id)}
+                            onDelete={() => handleDeleteDescription(desc.id)}
                           />
                         </>
                       ) : (
                         <div
-                          onMouseEnter={() => setHoveredSection(`description-${desc.id}`)}
+                          onMouseEnter={() =>
+                            setHoveredSection(`description-${desc.id}`)
+                          }
                           onMouseLeave={() => setHoveredSection(null)}
                         >
                           <p
@@ -497,7 +511,11 @@ export const SplitImageCardBlockComponent: React.FC<
                           <Input
                             value={btn.text}
                             onChange={(e) =>
-                              handleUpdateButton(btn.id, e.target.value, btn.link)
+                              handleUpdateButton(
+                                btn.id,
+                                e.target.value,
+                                btn.link,
+                              )
                             }
                             onBlur={() =>
                               setTimeout(() => setEditMode(null), 200)
@@ -518,7 +536,11 @@ export const SplitImageCardBlockComponent: React.FC<
                           <Input
                             value={btn.link}
                             onChange={(e) =>
-                              handleUpdateButton(btn.id, btn.text, e.target.value)
+                              handleUpdateButton(
+                                btn.id,
+                                btn.text,
+                                e.target.value,
+                              )
                             }
                             onBlur={() =>
                               setTimeout(() => setEditMode(null), 200)
@@ -537,16 +559,19 @@ export const SplitImageCardBlockComponent: React.FC<
                         </>
                       ) : (
                         <div
-                          onMouseEnter={() => setHoveredSection(`button-${btn.id}`)}
+                          onMouseEnter={() =>
+                            setHoveredSection(`button-${btn.id}`)
+                          }
                           onMouseLeave={() => setHoveredSection(null)}
                         >
                           <button
-                            onClick={() =>
-                              setEditMode(`button-text-${btn.id}`)
-                            }
+                            onClick={() => setEditMode(`button-text-${btn.id}`)}
                             className="py-2 px-4 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
                             style={{
-                              border: hoveredSection === `button-${btn.id}` ? "1px dashed white" : "none",
+                              border:
+                                hoveredSection === `button-${btn.id}`
+                                  ? "1px dashed white"
+                                  : "none",
                             }}
                           >
                             {btn.text}

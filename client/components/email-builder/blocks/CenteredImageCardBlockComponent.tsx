@@ -14,7 +14,8 @@ interface CenteredImageCardBlockComponentProps {
 }
 
 // Helper to generate unique IDs
-const generateId = () => `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+const generateId = () =>
+  `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 export const CenteredImageCardBlockComponent: React.FC<
   CenteredImageCardBlockComponentProps
@@ -35,7 +36,7 @@ export const CenteredImageCardBlockComponent: React.FC<
     () =>
       block.titles ||
       (block.title ? [{ id: "title-0", content: block.title }] : []),
-    [block.titles, block.title]
+    [block.titles, block.title],
   );
 
   const descriptions = useMemo(
@@ -44,7 +45,7 @@ export const CenteredImageCardBlockComponent: React.FC<
       (block.description
         ? [{ id: "description-0", content: block.description }]
         : []),
-    [block.descriptions, block.description]
+    [block.descriptions, block.description],
   );
 
   const buttons = useMemo(
@@ -59,7 +60,7 @@ export const CenteredImageCardBlockComponent: React.FC<
             },
           ]
         : []),
-    [block.buttons, block.buttonText, block.buttonLink]
+    [block.buttons, block.buttonText, block.buttonLink],
   );
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,9 +162,14 @@ export const CenteredImageCardBlockComponent: React.FC<
   };
 
   const handleAddDescription = () => {
-    const newDescriptions = [...descriptions, { id: generateId(), content: "" }];
+    const newDescriptions = [
+      ...descriptions,
+      { id: generateId(), content: "" },
+    ];
     onBlockUpdate({ ...block, descriptions: newDescriptions });
-    setEditMode(`description-${newDescriptions[newDescriptions.length - 1].id}`);
+    setEditMode(
+      `description-${newDescriptions[newDescriptions.length - 1].id}`,
+    );
   };
 
   const handleAddButton = () => {
@@ -173,22 +179,20 @@ export const CenteredImageCardBlockComponent: React.FC<
   };
 
   const handleUpdateTitle = (id: string, content: string) => {
-    const newTitles = titles.map((t) =>
-      t.id === id ? { ...t, content } : t
-    );
+    const newTitles = titles.map((t) => (t.id === id ? { ...t, content } : t));
     onBlockUpdate({ ...block, titles: newTitles });
   };
 
   const handleUpdateDescription = (id: string, content: string) => {
     const newDescriptions = descriptions.map((d) =>
-      d.id === id ? { ...d, content } : d
+      d.id === id ? { ...d, content } : d,
     );
     onBlockUpdate({ ...block, descriptions: newDescriptions });
   };
 
   const handleUpdateButton = (id: string, text: string, link: string) => {
     const newButtons = buttons.map((b) =>
-      b.id === id ? { ...b, text, link } : b
+      b.id === id ? { ...b, text, link } : b,
     );
     onBlockUpdate({ ...block, buttons: newButtons });
   };
@@ -206,14 +210,18 @@ export const CenteredImageCardBlockComponent: React.FC<
 
       // Copy to clipboard with styling
       const styledContent = `<h2 style="font-weight: bold; font-size: 20px; color: rgb(17, 24, 39); text-align: center;">${titleToDuplicate.content}</h2>`;
-      navigator.clipboard.write([
-        new ClipboardItem({
-          "text/html": new Blob([styledContent], { type: "text/html" }),
-          "text/plain": new Blob([titleToDuplicate.content], { type: "text/plain" })
-        })
-      ]).catch(() => {
-        navigator.clipboard.writeText(titleToDuplicate.content);
-      });
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            "text/html": new Blob([styledContent], { type: "text/html" }),
+            "text/plain": new Blob([titleToDuplicate.content], {
+              type: "text/plain",
+            }),
+          }),
+        ])
+        .catch(() => {
+          navigator.clipboard.writeText(titleToDuplicate.content);
+        });
     }
   };
 
@@ -230,14 +238,18 @@ export const CenteredImageCardBlockComponent: React.FC<
 
       // Copy to clipboard with styling
       const styledContent = `<p style="font-size: 14px; color: rgb(75, 85, 99); text-align: center; white-space: pre-wrap;">${descToDuplicate.content}</p>`;
-      navigator.clipboard.write([
-        new ClipboardItem({
-          "text/html": new Blob([styledContent], { type: "text/html" }),
-          "text/plain": new Blob([descToDuplicate.content], { type: "text/plain" })
-        })
-      ]).catch(() => {
-        navigator.clipboard.writeText(descToDuplicate.content);
-      });
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            "text/html": new Blob([styledContent], { type: "text/html" }),
+            "text/plain": new Blob([descToDuplicate.content], {
+              type: "text/plain",
+            }),
+          }),
+        ])
+        .catch(() => {
+          navigator.clipboard.writeText(descToDuplicate.content);
+        });
     }
   };
 
@@ -254,14 +266,21 @@ export const CenteredImageCardBlockComponent: React.FC<
 
       // Copy to clipboard with styling
       const styledContent = `<a href="${buttonToDuplicate.link}" style="display: inline-block; padding: 8px 16px; background-color: rgb(255, 106, 35); color: white; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 14px;">${buttonToDuplicate.text}</a>`;
-      navigator.clipboard.write([
-        new ClipboardItem({
-          "text/html": new Blob([styledContent], { type: "text/html" }),
-          "text/plain": new Blob([`${buttonToDuplicate.text} (${buttonToDuplicate.link})`], { type: "text/plain" })
-        })
-      ]).catch(() => {
-        navigator.clipboard.writeText(`${buttonToDuplicate.text} (${buttonToDuplicate.link})`);
-      });
+      navigator.clipboard
+        .write([
+          new ClipboardItem({
+            "text/html": new Blob([styledContent], { type: "text/html" }),
+            "text/plain": new Blob(
+              [`${buttonToDuplicate.text} (${buttonToDuplicate.link})`],
+              { type: "text/plain" },
+            ),
+          }),
+        ])
+        .catch(() => {
+          navigator.clipboard.writeText(
+            `${buttonToDuplicate.text} (${buttonToDuplicate.link})`,
+          );
+        });
     }
   };
 
@@ -488,9 +507,7 @@ export const CenteredImageCardBlockComponent: React.FC<
                         onChange={(e) =>
                           handleUpdateTitle(title.id, e.target.value)
                         }
-                        onBlur={() =>
-                          setTimeout(() => setEditMode(null), 200)
-                        }
+                        onBlur={() => setTimeout(() => setEditMode(null), 200)}
                         onMouseDown={(e) => e.stopPropagation()}
                         autoFocus
                         className="text-center font-bold text-lg focus:outline-none"
@@ -504,13 +521,13 @@ export const CenteredImageCardBlockComponent: React.FC<
                     </>
                   ) : (
                     <div
-                      onMouseEnter={() => setHoveredSection(`title-${title.id}`)}
+                      onMouseEnter={() =>
+                        setHoveredSection(`title-${title.id}`)
+                      }
                       onMouseLeave={() => setHoveredSection(null)}
                     >
                       <h3
-                        onClick={() =>
-                          setEditMode(`title-${title.id}`)
-                        }
+                        onClick={() => setEditMode(`title-${title.id}`)}
                         className="font-bold text-xl text-gray-900 cursor-pointer transition-all p-3 rounded"
                         style={{
                           border:
@@ -538,14 +555,9 @@ export const CenteredImageCardBlockComponent: React.FC<
                       <textarea
                         value={desc.content}
                         onChange={(e) =>
-                          handleUpdateDescription(
-                            desc.id,
-                            e.target.value
-                          )
+                          handleUpdateDescription(desc.id, e.target.value)
                         }
-                        onBlur={() =>
-                          setTimeout(() => setEditMode(null), 200)
-                        }
+                        onBlur={() => setTimeout(() => setEditMode(null), 200)}
                         onMouseDown={(e) => e.stopPropagation()}
                         autoFocus
                         className="w-full resize-none"
@@ -563,23 +575,19 @@ export const CenteredImageCardBlockComponent: React.FC<
                       />
                       <SectionToolbar
                         onAdd={handleAddDescription}
-                        onCopy={() =>
-                          handleDuplicateDescription(desc.id)
-                        }
-                        onDelete={() =>
-                          handleDeleteDescription(desc.id)
-                        }
+                        onCopy={() => handleDuplicateDescription(desc.id)}
+                        onDelete={() => handleDeleteDescription(desc.id)}
                       />
                     </>
                   ) : (
                     <div
-                      onMouseEnter={() => setHoveredSection(`description-${desc.id}`)}
+                      onMouseEnter={() =>
+                        setHoveredSection(`description-${desc.id}`)
+                      }
                       onMouseLeave={() => setHoveredSection(null)}
                     >
                       <p
-                        onClick={() =>
-                          setEditMode(`description-${desc.id}`)
-                        }
+                        onClick={() => setEditMode(`description-${desc.id}`)}
                         className="text-sm text-gray-600 cursor-pointer transition-all p-3 rounded whitespace-pre-wrap break-words"
                         style={{
                           border:
@@ -607,15 +615,9 @@ export const CenteredImageCardBlockComponent: React.FC<
                       <Input
                         value={btn.text}
                         onChange={(e) =>
-                          handleUpdateButton(
-                            btn.id,
-                            e.target.value,
-                            btn.link
-                          )
+                          handleUpdateButton(btn.id, e.target.value, btn.link)
                         }
-                        onBlur={() =>
-                          setTimeout(() => setEditMode(null), 200)
-                        }
+                        onBlur={() => setTimeout(() => setEditMode(null), 200)}
                         onMouseDown={(e) => e.stopPropagation()}
                         autoFocus
                         className="text-center focus:outline-none"
@@ -632,15 +634,9 @@ export const CenteredImageCardBlockComponent: React.FC<
                       <Input
                         value={btn.link}
                         onChange={(e) =>
-                          handleUpdateButton(
-                            btn.id,
-                            btn.text,
-                            e.target.value
-                          )
+                          handleUpdateButton(btn.id, btn.text, e.target.value)
                         }
-                        onBlur={() =>
-                          setTimeout(() => setEditMode(null), 200)
-                        }
+                        onBlur={() => setTimeout(() => setEditMode(null), 200)}
                         onMouseDown={(e) => e.stopPropagation()}
                         autoFocus
                         placeholder="https://example.com"
@@ -660,12 +656,13 @@ export const CenteredImageCardBlockComponent: React.FC<
                     >
                       <div className="flex justify-center">
                         <button
-                          onClick={() =>
-                            setEditMode(`button-text-${btn.id}`)
-                          }
+                          onClick={() => setEditMode(`button-text-${btn.id}`)}
                           className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
                           style={{
-                            border: hoveredSection === `button-${btn.id}` ? "1px dashed white" : "none",
+                            border:
+                              hoveredSection === `button-${btn.id}`
+                                ? "1px dashed white"
+                                : "none",
                           }}
                         >
                           {btn.text}
