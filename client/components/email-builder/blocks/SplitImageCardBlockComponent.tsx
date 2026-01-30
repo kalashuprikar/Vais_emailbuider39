@@ -373,7 +373,7 @@ export const SplitImageCardBlockComponent: React.FC<
           )}
         </div>
 
-        <div className="mt-4 flex gap-2 justify-between">
+        <div className="mt-4">
           <Button
             onClick={toggleImagePosition}
             variant="outline"
@@ -382,44 +382,6 @@ export const SplitImageCardBlockComponent: React.FC<
           >
             Swap Image Position
           </Button>
-
-          {isSelected && (onDuplicate || onDelete) && (
-            <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-2 shadow-sm">
-              {onDuplicate && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0 hover:bg-gray-100"
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDuplicate(block, blockIndex + 1);
-                  }}
-                  title="Duplicate block"
-                >
-                  <Copy className="w-4 h-4 text-gray-700" />
-                </Button>
-              )}
-
-              {onDelete && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0 hover:bg-red-100"
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete();
-                  }}
-                  title="Delete block"
-                >
-                  <Trash2 className="w-4 h-4 text-red-600" />
-                </Button>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>
