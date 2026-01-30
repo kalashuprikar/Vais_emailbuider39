@@ -79,6 +79,87 @@ export const SplitImageCardBlockComponent: React.FC<
     });
   };
 
+  const handleResizeStart = (e: React.MouseEvent, handle: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    setResizeHandle(handle);
+    setStartX(e.clientX);
+    setStartY(e.clientY);
+    setStartWidth(block.width || 300);
+    setStartHeight(block.height || 200);
+  };
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!resizeHandle) return;
+
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
+
+      let newWidth = startWidth;
+      let newHeight = startHeight;
+
+      // Handle different resize handles
+      switch (resizeHandle) {
+        case "se": // Southeast corner
+          newWidth = Math.max(100, startWidth + deltaX);
+          newHeight = Math.max(100, startHeight + deltaY);
+          break;
+        case "sw": // Southwest corner
+          newWidth = Math.max(100, startWidth - deltaX);
+          newHeight = Math.max(100, startHeight + deltaY);
+          break;
+        case "ne": // Northeast corner
+          newWidth = Math.max(100, startWidth + deltaX);
+          newHeight = Math.max(100, startHeight - deltaY);
+          break;
+        case "nw": // Northwest corner
+          newWidth = Math.max(100, startWidth - deltaX);
+          newHeight = Math.max(100, startHeight - deltaY);
+          break;
+        case "e": // East
+          newWidth = Math.max(100, startWidth + deltaX);
+          break;
+        case "w": // West
+          newWidth = Math.max(100, startWidth - deltaX);
+          break;
+        case "n": // North
+          newHeight = Math.max(100, startHeight - deltaY);
+          break;
+        case "s": // South
+          newHeight = Math.max(100, startHeight + deltaY);
+          break;
+      }
+
+      onBlockUpdate({ ...block, width: newWidth, height: newHeight });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      setResizeHandle(null);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [
+    isResizing,
+    resizeHandle,
+    startX,
+    startY,
+    startWidth,
+    startHeight,
+    block,
+    onBlockUpdate,
+  ]);
+
   const handleAddTitle = () => {
     const newTitles = [...titles, { id: generateId(), content: "" }];
     onBlockUpdate({ ...block, titles: newTitles });
