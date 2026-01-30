@@ -463,33 +463,33 @@ export const CenteredImageCardBlockComponent: React.FC<
           {(block.buttonText || editMode === "buttonText") && (
             <div className="pt-2">
               {editMode === "buttonText" ? (
-                <Input
-                  value={block.buttonText}
-                  onChange={(e) =>
-                    handleFieldChange("buttonText", e.target.value)
-                  }
-                  onBlur={() => setEditMode(null)}
-                  autoFocus
-                  className="text-center focus:outline-none"
-                  style={{ border: "2px solid rgb(255, 106, 0)" }}
-                />
-              ) : (
                 <>
-                  <div className="flex justify-center">
-                    <button
-                      onClick={() => setEditMode("buttonText")}
-                      onMouseEnter={() => setIsHoveringButton(true)}
-                      onMouseLeave={() => setIsHoveringButton(false)}
-                      className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
-                      style={{
-                        border: isHoveringButton ? "1px dashed white" : "none",
-                      }}
-                    >
-                      {block.buttonText}
-                    </button>
-                  </div>
-                  {isHoveringButton && <div className="flex justify-center mt-2"><SectionToolbar sectionType="buttonText" /></div>}
+                  <Input
+                    value={block.buttonText}
+                    onChange={(e) =>
+                      handleFieldChange("buttonText", e.target.value)
+                    }
+                    onBlur={() => setEditMode(null)}
+                    autoFocus
+                    className="text-center focus:outline-none"
+                    style={{ border: "2px solid rgb(255, 106, 0)" }}
+                  />
+                  <div className="flex justify-center mt-2"><SectionToolbar sectionType="buttonText" /></div>
                 </>
+              ) : (
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => setEditMode("buttonText")}
+                    onMouseEnter={() => setIsHoveringButton(true)}
+                    onMouseLeave={() => setIsHoveringButton(false)}
+                    className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
+                    style={{
+                      border: isHoveringButton ? "1px dashed white" : "none",
+                    }}
+                  >
+                    {block.buttonText}
+                  </button>
+                </div>
               )}
             </div>
           )}
