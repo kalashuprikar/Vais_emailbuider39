@@ -60,6 +60,8 @@ export const TextBlockComponent: React.FC<TextBlockComponentProps> = ({
       }`}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       style={{
         margin: `${block.margin}px`,
         display: "block",
