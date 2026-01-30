@@ -105,6 +105,7 @@ export const ImageBlockComponent: React.FC<ImageBlockComponentProps> = ({
     >
       {block.src ? (
         <div
+          className="group"
           style={{
             textAlign: block.alignment as any,
             position: "relative",
