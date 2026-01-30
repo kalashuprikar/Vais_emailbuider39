@@ -646,16 +646,6 @@ export const SplitImageCardBlockComponent: React.FC<
                       >
                         <Trash2 className="w-6 h-6 text-white" />
                       </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onBlockUpdate({ ...block, image: "" });
-                        }}
-                        className="flex items-center justify-center cursor-pointer p-2 hover:bg-black hover:bg-opacity-60 rounded transition-all"
-                        title="Delete image"
-                      >
-                        <Trash2 className="w-6 h-6 text-white" />
-                      </button>
                     </div>
                   </div>
                 </div>
