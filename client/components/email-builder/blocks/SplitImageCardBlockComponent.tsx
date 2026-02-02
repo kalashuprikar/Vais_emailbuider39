@@ -632,6 +632,15 @@ export const SplitImageCardBlockComponent: React.FC<
                           >
                             {title.content}
                           </p>
+                          {focusedSection === `title-${title.id}` && (
+                            <FieldToolbar
+                              fieldId={title.id}
+                              fieldValue={title.content}
+                              onAddTitle={handleAddTitle}
+                              onCopy={handleCopyText}
+                              onClear={handleClearTitle}
+                            />
+                          )}
                         </div>
                       )}
                     </div>
