@@ -297,7 +297,7 @@ export const TwoColumnCardBlockComponent: React.FC<
                 />
               ) : (
                 <h3
-                  className="font-bold text-base mb-2 m-0 cursor-pointer"
+                  className="font-bold text-base mb-2 m-0 cursor-pointer px-2 py-1 rounded transition-all hover:border-2 hover:border-dotted hover:border-current"
                   onDoubleClick={() =>
                     handleStartEditingField(card.id, "title")
                   }
