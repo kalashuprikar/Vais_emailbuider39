@@ -279,12 +279,8 @@ export const SplitImageCardBlockComponent: React.FC<
       });
       onBlockUpdate({ ...block, titles: newTitles });
 
-      // Copy to clipboard with styling
-      const styledContent = `<h2 style="font-weight: bold; font-size: 18px; color: rgb(17, 24, 39);">${titleToDuplicate.content}</h2>`;
-      const success = await copyToClipboard(
-        titleToDuplicate.content,
-        styledContent,
-      );
+      // Copy to clipboard
+      const success = await copyToClipboard(titleToDuplicate.content);
       if (success) {
         toast({
           title: "Copied!",
