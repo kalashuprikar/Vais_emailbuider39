@@ -315,7 +315,7 @@ export const CenteredImageCardBlockComponent: React.FC<
     }
   };
 
-  const handleDuplicateButton = (id: string) => {
+  const handleDuplicateButton = async (id: string) => {
     const buttonToDuplicate = buttons.find((b) => b.id === id);
     if (buttonToDuplicate) {
       const newButtons = [...buttons];
@@ -328,46 +328,22 @@ export const CenteredImageCardBlockComponent: React.FC<
 
       // Copy to clipboard with complete styling
       const styledContent = `<a href="${buttonToDuplicate.link}" style="display: inline-block; padding: 10px 24px; background-color: rgb(255, 106, 0); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; border: none; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(255, 106, 0, 0.2);">${buttonToDuplicate.text}</a>`;
-      navigator.clipboard
-        .write([
-          new ClipboardItem({
-            "text/html": new Blob([styledContent], { type: "text/html" }),
-            "text/plain": new Blob(
-              [`${buttonToDuplicate.text} (${buttonToDuplicate.link})`],
-              { type: "text/plain" },
-            ),
-          }),
-        ])
-        .then(() => {
-          toast({
-            title: "Copied!",
-            description: "Button copied to clipboard",
-            duration: 2000,
-          });
-        })
-        .catch((err) => {
-          console.error("Copy failed:", err);
-          // Fallback to text-only copy
-          navigator.clipboard
-            .writeText(
-              `${buttonToDuplicate.text} (${buttonToDuplicate.link})`,
-            )
-            .then(() => {
-              toast({
-                title: "Copied!",
-                description: "Button copied to clipboard",
-                duration: 2000,
-              });
-            })
-            .catch(() => {
-              toast({
-                title: "Copy Failed",
-                description: "Could not copy to clipboard",
-                variant: "destructive",
-                duration: 2000,
-              });
-            });
+      const buttonText = `${buttonToDuplicate.text} (${buttonToDuplicate.link})`;
+      const success = await copyToClipboard(buttonText, styledContent);
+      if (success) {
+        toast({
+          title: "Copied!",
+          description: "Button copied to clipboard",
+          duration: 2000,
         });
+      } else {
+        toast({
+          title: "Copy Failed",
+          description: "Could not copy to clipboard",
+          variant: "destructive",
+          duration: 2000,
+        });
+      }
     }
   };
 
