@@ -61,6 +61,41 @@ export const TwoColumnCardBlockComponent: React.FC<
     onUpdate({ ...block, cards: updatedCards });
   };
 
+  const handleStartEditingField = (
+    cardId: string,
+    fieldName: "title" | "description",
+  ) => {
+    const card = block.cards.find((c) => c.id === cardId);
+    if (card) {
+      setEditingField(`${cardId}-${fieldName}`);
+      setEditingValue(card[fieldName]);
+    }
+  };
+
+  const handleSaveEdit = (cardId: string, fieldName: "title" | "description") => {
+    if (editingField === `${cardId}-${fieldName}`) {
+      const updatedCards = block.cards.map((card) =>
+        card.id === cardId ? { ...card, [fieldName]: editingValue } : card,
+      );
+      onUpdate({ ...block, cards: updatedCards });
+      setEditingField(null);
+      setEditingValue("");
+    }
+  };
+
+  const handleKeyPress = (
+    e: React.KeyboardEvent,
+    cardId: string,
+    fieldName: "title" | "description",
+  ) => {
+    if (e.key === "Enter" && fieldName === "title") {
+      handleSaveEdit(cardId, fieldName);
+    } else if (e.key === "Escape") {
+      setEditingField(null);
+      setEditingValue("");
+    }
+  };
+
   const handleResizeStart = (
     e: React.MouseEvent,
     cardId: string,
