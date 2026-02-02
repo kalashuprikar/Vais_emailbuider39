@@ -748,22 +748,52 @@ export const CenteredImageCardBlockComponent: React.FC<
                       onMouseEnter={() => setHoveredSection(`button-${btn.id}`)}
                       onMouseLeave={() => setHoveredSection(null)}
                     >
-                      <div className="flex justify-center">
-                        <button
-                          onClick={() => setEditMode(`button-text-${btn.id}`)}
-                          className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
-                          style={{
-                            border:
-                              hoveredSection === `button-${btn.id}`
-                                ? "2px dotted white"
-                                : "none",
-                          }}
-                        >
-                          {btn.text}
-                        </button>
-                      </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        Link: {btn.link || "#"}
+                      <div className="flex justify-center items-center gap-2 group">
+                        <div>
+                          <button
+                            onClick={() => setEditMode(`button-text-${btn.id}`)}
+                            className="inline-block py-2 px-6 bg-valasys-orange text-white rounded text-sm font-bold hover:bg-orange-600 cursor-pointer transition-all"
+                            style={{
+                              border:
+                                hoveredSection === `button-${btn.id}`
+                                  ? "2px dotted white"
+                                  : "none",
+                            }}
+                          >
+                            {btn.text}
+                          </button>
+                          <div className="text-xs text-gray-500 mt-1">
+                            Link: {btn.link || "#"}
+                          </div>
+                        </div>
+                        {hoveredSection === `button-${btn.id}` && (
+                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 hover:bg-gray-100"
+                              title="Copy"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDuplicateButton(btn.id);
+                              }}
+                            >
+                              <Copy className="w-4 h-4 text-gray-700" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-7 w-7 p-0 hover:bg-red-100"
+                              title="Delete"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteButton(btn.id);
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4 text-red-600" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
