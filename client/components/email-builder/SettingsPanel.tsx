@@ -6062,13 +6062,36 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   >
                     Card Title
                   </Label>
-                  <Input
-                    id="cardTitle"
-                    value={selectedCard.title}
-                    onChange={(e) => handleCardUpdate("title", e.target.value)}
-                    placeholder="Enter card title"
-                    className="focus:ring-valasys-orange focus:ring-2"
-                  />
+                  <div className="flex gap-2">
+                    <Input
+                      id="cardTitle"
+                      value={selectedCard.title}
+                      onChange={(e) => handleCardUpdate("title", e.target.value)}
+                      placeholder="Enter card title"
+                      className="flex-1 focus:ring-valasys-orange focus:ring-2"
+                    />
+                    <Button
+                      onClick={() => {
+                        const newTitle = selectedCard.title + " (copy)";
+                        handleCardUpdate("title", newTitle);
+                      }}
+                      size="sm"
+                      variant="outline"
+                      title="Duplicate title text"
+                      className="text-xs"
+                    >
+                      <Copy className="w-3 h-3" />
+                    </Button>
+                    <Button
+                      onClick={() => handleCardUpdate("title", "")}
+                      size="sm"
+                      variant="outline"
+                      title="Clear title"
+                      className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </div>
 
                 <div>
@@ -6078,16 +6101,41 @@ export const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   >
                     Card Description
                   </Label>
-                  <textarea
-                    id="cardDescription"
-                    value={selectedCard.description}
-                    onChange={(e) =>
-                      handleCardUpdate("description", e.target.value)
-                    }
-                    placeholder="Enter card description"
-                    rows={4}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-valasys-orange focus:border-transparent"
-                  />
+                  <div className="flex gap-2">
+                    <textarea
+                      id="cardDescription"
+                      value={selectedCard.description}
+                      onChange={(e) =>
+                        handleCardUpdate("description", e.target.value)
+                      }
+                      placeholder="Enter card description"
+                      rows={4}
+                      className="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-valasys-orange focus:border-transparent"
+                    />
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        onClick={() => {
+                          const newDesc = selectedCard.description + " (copy)";
+                          handleCardUpdate("description", newDesc);
+                        }}
+                        size="sm"
+                        variant="outline"
+                        title="Duplicate description text"
+                        className="text-xs"
+                      >
+                        <Copy className="w-3 h-3" />
+                      </Button>
+                      <Button
+                        onClick={() => handleCardUpdate("description", "")}
+                        size="sm"
+                        variant="outline"
+                        title="Clear description"
+                        className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
