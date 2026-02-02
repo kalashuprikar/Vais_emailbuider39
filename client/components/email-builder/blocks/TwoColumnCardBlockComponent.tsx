@@ -225,7 +225,15 @@ export const TwoColumnCardBlockComponent: React.FC<
             >
               {card.image ? (
                 <>
-                  <div style={{ padding: "12px", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div
+                    style={{
+                      padding: "12px",
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
                     <img
                       src={card.image}
                       alt={card.imageAlt || "Card image"}
