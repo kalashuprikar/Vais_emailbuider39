@@ -271,6 +271,7 @@ export const TwoColumnCardBlockComponent: React.FC<
 
             {/* Content Section */}
             <div
+              className="flex-1 overflow-auto"
               style={{
                 padding: `${Math.max(12, card.padding)}px`,
                 color: card.textColor,
