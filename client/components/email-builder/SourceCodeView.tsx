@@ -73,7 +73,6 @@ export const SourceCodeView: React.FC<SourceCodeViewProps> = ({ template }) => {
         }, 2000);
       } catch (err) {
         console.error("Copy failed:", err);
-        toast.error("Failed to copy to clipboard");
       } finally {
         document.body.removeChild(textArea);
       }
