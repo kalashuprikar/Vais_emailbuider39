@@ -13,7 +13,9 @@ import {
   createButtonBlock,
   createDividerBlock,
   createImageBlock,
-  createSpacerBlock
+  createSpacerBlock,
+  createLogoBlock,
+  createFooterWithSocialBlock
 } from "./utils";
 
 interface AIAssistantProps {
@@ -74,6 +76,10 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({
           return { ...createImageBlock(block.src), ...block, id };
         case "spacer":
           return { ...createSpacerBlock(block.height), ...block, id };
+        case "logo":
+          return { ...createLogoBlock(block.src), ...block, id };
+        case "footer-with-social":
+          return { ...createFooterWithSocialBlock(), ...block, id };
         default:
           return { ...block, id };
       }
