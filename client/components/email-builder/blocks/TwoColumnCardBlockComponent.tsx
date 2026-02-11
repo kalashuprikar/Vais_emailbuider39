@@ -329,15 +329,21 @@ export const TwoColumnCardBlockComponent: React.FC<
   return (
     <div className="w-full">
       {isSelected && (onDuplicate || onDelete) && (
-        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-2 shadow-sm mb-3 w-fit">
+        <div
+          className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-2 shadow-sm mb-3 w-fit"
+          onClick={(e) => e.stopPropagation()}
+        >
           {onDuplicate && (
             <Button
               variant="ghost"
               size="sm"
               className="h-8 w-8 p-0 hover:bg-gray-100"
-              onMouseDown={(e) => e.stopPropagation()}
-              onPointerDown={(e) => e.stopPropagation()}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 onDuplicate(block, blockIndex + 1);
               }}
@@ -352,9 +358,12 @@ export const TwoColumnCardBlockComponent: React.FC<
               variant="ghost"
               size="sm"
               className="h-8 w-8 p-0 hover:bg-red-100"
-              onMouseDown={(e) => e.stopPropagation()}
-              onPointerDown={(e) => e.stopPropagation()}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 onDelete(block.id);
               }}
@@ -375,7 +384,7 @@ export const TwoColumnCardBlockComponent: React.FC<
         }}
       >
         <div className="flex gap-5">
-        {block.cards.map((card, index) => {
+          {block.cards.map((card, index) => {
           const titles = useMemo(
             () =>
               card.titles ||

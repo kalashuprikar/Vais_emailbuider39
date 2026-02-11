@@ -51,7 +51,12 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   onDelete,
   blockIndex = 0,
 }) => {
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    // Don't select the block if clicking on a button
+    const target = e.target as HTMLElement;
+    if (target.closest('button')) {
+      return;
+    }
     onBlockSelect?.(block.id);
   };
 
