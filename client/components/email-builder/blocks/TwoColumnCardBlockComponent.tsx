@@ -511,7 +511,7 @@ export const TwoColumnCardBlockComponent: React.FC<
                           >
                             {title.content || "Add title"}
                           </h3>
-                          {focusedFieldId === title.id && (
+                          {(focusedFieldId === title.id || hoveredFieldId === title.id) && (
                             <FieldToolbar
                               fieldId={title.id}
                               cardId={card.id}
@@ -585,7 +585,7 @@ export const TwoColumnCardBlockComponent: React.FC<
                           >
                             {desc.content || "Add description"}
                           </p>
-                          {focusedFieldId === desc.id && (
+                          {(focusedFieldId === desc.id || hoveredFieldId === desc.id) && (
                             <FieldToolbar
                               fieldId={desc.id}
                               cardId={card.id}
